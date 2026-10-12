@@ -989,6 +989,15 @@ label.row {
   font-variant-numeric: tabular-nums;
 }
 
+.about-line {
+  color: var(--muted);
+  text-align: center;
+}
+
+.about-version {
+  font-variant-numeric: tabular-nums;
+}
+
 .about-thanks {
   margin-top: 12px;
   color: var(--muted);

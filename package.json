@@ -1,6 +1,6 @@
 {
   "name": "dammer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Dammer — a private, lightweight auto-refresher for any browser tab (Chrome extension, Manifest V3).",
   "type": "module",

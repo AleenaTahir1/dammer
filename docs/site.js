@@ -34,30 +34,16 @@
       row.lastElementChild.style.setProperty('--w', `${42 + Math.random() * 50}%`);
     });
     $('#pageNote').textContent = refreshes === 1 ? '1 new message' : `${refreshes} new messages`;
+    dispatchEvent(new CustomEvent('dammer:refresh'));
     if (!motionOK) return;
+    // The chosen card turns over, like a page being reloaded.
+    chosen.animate([{ rotate: 'x 0deg' }, { rotate: 'x 360deg' }], { duration: 800, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
     gsap
       .timeline()
       .fromTo('#loadBar', { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.7, ease: 'power2.inOut' })
       .to('#loadBar', { opacity: 0, duration: 0.3 })
       .fromTo('#tabSpin', { rotate: 0 }, { rotate: 720, duration: 1, ease: 'power1.inOut' }, 0)
       .fromTo(rows, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.05, duration: 0.6 }, 0.35);
-    hop();
-  }
-
-  /* The character. */
-
-  const buddy = $('#buddy');
-  const bubble = $('#buddySay');
-  let bubbleTimer;
-  function speak(text) {
-    bubble.textContent = text;
-    bubble.classList.add('is-on');
-    clearTimeout(bubbleTimer);
-    bubbleTimer = setTimeout(() => bubble.classList.remove('is-on'), 3400);
-  }
-  function hop() {
-    gsap.to(buddy, { y: -16, duration: 0.2, ease: 'power2.out', yoyo: true, repeat: 1 });
-    speak('Refreshed!');
   }
 
   // Runs something inside a demo once its popup script is ready.
@@ -70,6 +56,102 @@
     };
     attempt();
   }
+
+  /* Tab cards: four example tabs floating beside the headline. Choosing one
+     points the live demo at it; they can also be dragged and spring back. */
+
+  const cards = $$('.tabcard');
+  const titles = { 11: 'Inbox · Example Mail', 12: 'Orders · Corner Shop', 13: 'Live scores · Matchday', 14: 'Dashboard · Analytics' };
+  let chosen = cards[0];
+  let run = null;
+
+  function showChosen(card) {
+    chosen = card;
+    cards.forEach((c) => c.setAttribute('aria-pressed', String(c === card)));
+    $('#tabTitle').textContent = titles[card.dataset.tab];
+    $('#tabUrl').textContent = card.dataset.site;
+    $('#pageTitle').textContent = card.dataset.title;
+    $('#pageNote').textContent = 'up to date';
+    rows.forEach((row) => row.classList.remove('is-new'));
+  }
+
+  function chooseCard(card) {
+    if (card === chosen) return;
+    showChosen(card);
+    withDemo(frames[0], (win) => win.demo.pick(Number(card.dataset.tab)));
+  }
+
+  // The chosen card mirrors the demo's real timer. If the tab is changed
+  // inside the popup instead, the cards follow.
+  withDemo(frames[0], (win) => {
+    setInterval(async () => {
+      run = await win.demo.run();
+      const card = cards.find((c) => Number(c.dataset.tab) === run?.tabId);
+      if (card && card !== chosen) showChosen(card);
+    }, 400);
+  });
+
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bodies = cards.map((card, i) => ({ card, x: 0, y: 0, vx: 0, vy: 0, grab: null, moved: 0, phase: i * 1.7, lean: [-3, 2.5, 3, -2][i] }));
+
+  for (const body of bodies) {
+    const { card } = body;
+    card.addEventListener('pointerdown', (event) => {
+      if (still) return;
+      card.setPointerCapture(event.pointerId);
+      body.grab = { px: event.clientX, py: event.clientY, x: body.x, y: body.y };
+      body.moved = 0;
+    });
+    card.addEventListener('pointermove', (event) => {
+      if (!body.grab) return;
+      const dx = event.clientX - body.grab.px;
+      const dy = event.clientY - body.grab.py;
+      body.moved = Math.max(body.moved, Math.hypot(dx, dy));
+      body.vx = (body.grab.x + dx - body.x) * 12;
+      body.vy = (body.grab.y + dy - body.y) * 12;
+      body.x = body.grab.x + dx;
+      body.y = body.grab.y + dy;
+    });
+    const release = () => (body.grab = null);
+    card.addEventListener('pointerup', release);
+    card.addEventListener('pointercancel', release);
+    // A drag is not a choice.
+    card.addEventListener('click', () => {
+      if (body.moved < 6) chooseCard(card);
+      body.moved = 0;
+    });
+  }
+
+  let cardClock = 0;
+  let lastCardFrame = 0;
+  function cardFrame(now) {
+    const dt = lastCardFrame ? Math.min((now - lastCardFrame) / 1000, 1 / 20) : 1 / 60;
+    lastCardFrame = now;
+    cardClock += dt;
+    for (const body of bodies) {
+      if (!body.grab) {
+        // A spring pulls each card home; released mid-throw, it overshoots and settles.
+        body.vx += (-90 * body.x - 9 * body.vx) * dt;
+        body.vy += (-90 * body.y - 9 * body.vy) * dt;
+        body.x += body.vx * dt;
+        body.y += body.vy * dt;
+      }
+      const bob = still ? 0 : Math.sin(cardClock * 0.9 + body.phase) * 6;
+      body.card.style.translate = `${body.x.toFixed(1)}px ${(body.y + bob).toFixed(1)}px`;
+      body.card.style.rotate = `${(body.lean + clampNumber(body.vx * 0.012, -9, 9)).toFixed(2)}deg`;
+
+      const live = body.card === chosen && run;
+      const total = live ? Math.max(1, run.nextAt - run.cycleStart) : 1;
+      const left = live ? Math.max(0, run.nextAt - Date.now()) : 0;
+      body.card.style.setProperty('--p', live ? String(Math.min(1, 1 - left / total)) : '0');
+      const text = live ? `0:${String(Math.ceil(left / 1000)).padStart(2, '0')}` : 'idle';
+      const label = body.card.querySelector('.tabcard-time');
+      if (label.textContent !== text) label.textContent = text;
+    }
+    requestAnimationFrame(cardFrame);
+  }
+  const clampNumber = (value, lo, hi) => Math.max(lo, Math.min(hi, value));
+  requestAnimationFrame(cardFrame);
 
   /* How it works: each step re-configures the second demo. */
 
@@ -105,7 +187,6 @@
   const motionOK = window.gsap && window.ScrollTrigger && window.SplitText && !matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!motionOK) {
     setStep(0);
-    speak('Hi! I refresh tabs.');
     return;
   }
 
@@ -135,8 +216,9 @@
       .from(headline.lines, { yPercent: 110, duration: 1.3, stagger: 0.11 })
       .to('.nav[data-load]', { opacity: 1, duration: 0.8 }, 0.1)
       .fromTo('.hero-copy [data-load]', { opacity: 0, y: 26 }, { opacity: 1, y: 0, stagger: 0.09 }, 0.45)
-      .fromTo('.hero-demo', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.4 }, 0.3)
-      .fromTo('#heroDevice', { y: -40, scale: 0.94, opacity: 0, transformOrigin: '86% 0%' }, { y: 0, scale: 1, opacity: 1, duration: 1.1 }, 0.85)
+      .fromTo('.tabcard', { opacity: 0, y: -70, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.3, stagger: 0.12 }, 0.5)
+      .fromTo('.hero-demo', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.4 }, 0.6)
+      .fromTo('#heroDevice', { y: -40, scale: 0.94, opacity: 0, transformOrigin: '86% 0%' }, { y: 0, scale: 1, opacity: 1, duration: 1.1 }, 1.1)
       .fromTo('.facts', { opacity: 0 }, { opacity: 1 }, 0.9)
       .from('.facts div', { y: 22, opacity: 0, stagger: 0.07 }, 0.9);
 
@@ -159,62 +241,11 @@
 
   /* Hero leaving: the copy eases back while the browser and the popup over it
      drift at different speeds, so the popup reads as floating. */
+  gsap.to('.hero-copy', { yPercent: -18, opacity: 0.2, ease: 'none', scrollTrigger: { trigger: '.hero-sky', start: 'top top', end: 'bottom top', scrub: 0.6 } });
   gsap
-    .timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 } })
-    .to('.hero-copy', { yPercent: -12, opacity: 0.3, ease: 'none' }, 0)
-    .to('.browser', { yPercent: 5, ease: 'none' }, 0)
-    .to('.stage .slot', { yPercent: -7, ease: 'none' }, 0);
-
-  /* The character walks along the bottom of the window: how far across it is
-     and the ring around it are both the page's scroll progress. */
-  const never = $('.never');
-  const walk = gsap.quickTo(buddy, 'x', { duration: 0.5, ease: 'power3.out' });
-  const covers = (el, y) => {
-    const box = el.getBoundingClientRect();
-    return box.top < y && box.bottom > y;
-  };
-  ScrollTrigger.create({
-    start: 0,
-    end: 'max',
-    onUpdate(self) {
-      const stride = Math.sin(self.scroll() / 34);
-      // It starts just off the left edge and walks in once you begin to scroll.
-      walk(self.progress * (innerWidth - buddy.offsetWidth + 62));
-      gsap.set('#buddyRing', { attr: { 'stroke-dasharray': `${self.progress * 100} 100` } });
-      gsap.set('#legA', { rotate: stride * 30 });
-      gsap.set('#legB', { rotate: stride * -30 });
-      gsap.set('#buddyBody', { y: -Math.abs(stride) * 2.5, rotate: self.direction * 4, transformOrigin: '50% 80%' });
-      buddy.classList.toggle('flip', self.progress > 0.55);
-      const feet = innerHeight - 40;
-      buddy.classList.toggle('on-dark', covers(never, feet) || (how.classList.contains('is-dark') && covers(how, feet)));
-    },
-  });
-  ScrollTrigger.addEventListener('scrollEnd', () => gsap.to(['#legA', '#legB', '#buddyBody'], { rotate: 0, y: 0, duration: 0.5 }));
-
-  // Its eyes follow the pointer.
-  const lookX = gsap.quickTo('#pupils', 'x', { duration: 0.3 });
-  const lookY = gsap.quickTo('#pupils', 'y', { duration: 0.3 });
-  addEventListener('pointermove', (event) => {
-    const box = buddy.getBoundingClientRect();
-    const dx = event.clientX - (box.left + box.width / 2);
-    const dy = event.clientY - (box.top + box.height / 3);
-    const reach = Math.hypot(dx, dy) || 1;
-    lookX((dx / reach) * 2.6);
-    lookY((dy / reach) * 2.6);
-  });
-
-  // And it has something to say about each part of the page.
-  const remarks = [
-    ['.hero', 'Hi! Scroll and I’ll walk with you.'],
-    ['#how', 'Watch the popup change.'],
-    ['.never', 'I can’t peek at your pages.'],
-    ['.screens', 'That’s every screen I have.'],
-    ['.install', 'One minute. Promise.'],
-    ['.foot', 'Thanks for scrolling!'],
-  ];
-  for (const [trigger, text] of remarks) {
-    ScrollTrigger.create({ trigger, start: 'top 60%', end: 'bottom 60%', onEnter: () => speak(text), onEnterBack: () => speak(text) });
-  }
+    .timeline({ scrollTrigger: { trigger: '.stage', start: 'top bottom', end: 'bottom top', scrub: 0.6 } })
+    .fromTo('.browser', { yPercent: 3 }, { yPercent: -3, ease: 'none' }, 0)
+    .fromTo('.stage .slot', { yPercent: 5 }, { yPercent: -6, ease: 'none' }, 0);
 
   /* Generic reveals, staggered within whatever arrives together. */
   ScrollTrigger.batch('[data-reveal]', {

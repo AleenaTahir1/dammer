@@ -8,6 +8,8 @@
   --ink: #121411;
   --moss: #3f5e33;
   --stone: #868a80;
+  --sage: #e6e7dc;
+  --grid: color-mix(in srgb, var(--moss) 7%, transparent);
   --hair: color-mix(in srgb, var(--ink) 13%, transparent);
 
   --bg: var(--paper);
@@ -124,7 +126,9 @@ h2 {
 }
 
 h1 {
-  font-size: clamp(2.6rem, 5.1vw, 5rem);
+  font-size: clamp(2.7rem, 6vw, 5.6rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
 }
 
 h2 {
@@ -212,7 +216,7 @@ h2 {
   align-items: center;
   gap: clamp(16px, 3vw, 40px);
   padding: 14px var(--gutter);
-  background: color-mix(in srgb, var(--nav-bg, var(--paper)) 78%, transparent);
+  background: color-mix(in srgb, var(--nav-bg, var(--sage)) 72%, transparent);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   color: var(--fg);
@@ -253,46 +257,199 @@ h2 {
   font-size: 0.9375rem;
 }
 
-/* Hero */
+/* Hero: centred copy on sage graph paper, with tab cards floating either
+   side that can be dragged about and chosen. The product sits underneath. */
 
 .hero {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  grid-template-rows: 1fr auto;
-  align-items: center;
-  column-gap: var(--gutter);
-  min-height: 100dvh;
-  padding: 104px var(--gutter) 104px;
+  background: var(--sage);
+  overflow: clip;
+}
+
+.hero-sky {
+  position: relative;
+  isolation: isolate;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: clamp(150px, 19vh, 200px) var(--gutter) 70px;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
 }
 
 .hero-copy {
   position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(20px, 2.6vw, 34px);
+  align-items: center;
+  gap: clamp(18px, 2.2vw, 28px);
+  text-align: center;
+  pointer-events: none;
+}
+
+.hero-copy a {
+  pointer-events: auto;
+}
+
+.hero-copy .eyebrow {
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+}
+
+h1 em {
+  color: var(--moss);
+  font-style: normal;
 }
 
 .lede {
-  max-width: 30em;
-  font-size: clamp(1.0625rem, 1.45vw, 1.3125rem);
-  line-height: 1.5;
+  font-size: clamp(1rem, 1.35vw, 1.1875rem);
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 18px 28px;
+  justify-content: center;
+  gap: 16px 28px;
+  margin-top: 4px;
 }
+
+.hint {
+  font: 400 0.75rem/1.4 var(--mono);
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+/* Tab cards */
+
+.tabcard {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  gap: 10px;
+  width: 196px;
+  padding: 10px 12px 11px;
+  border-radius: 14px;
+  background: #fbfaf6;
+  box-shadow: 0 0 0 1px var(--hair), 0 14px 26px -14px rgba(40, 52, 34, 0.45);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  will-change: transform;
+  transition: box-shadow 0.4s var(--ease);
+}
+
+.tabcard:active {
+  cursor: grabbing;
+}
+
+.tabcard[aria-pressed='true'] {
+  box-shadow: 0 0 0 2px var(--moss), 0 18px 30px -14px rgba(40, 52, 34, 0.55);
+}
+
+.tabcard-0 {
+  top: 215px;
+  left: 6%;
+}
+
+.tabcard-1 {
+  top: 410px;
+  left: 13%;
+}
+
+.tabcard-2 {
+  top: 190px;
+  right: 7%;
+}
+
+.tabcard-3 {
+  top: 395px;
+  right: 12.5%;
+}
+
+.tabcard-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tabcard-bar i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.tabcard-bar b {
+  margin-left: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.tabcard-lines {
+  display: grid;
+  gap: 6px;
+}
+
+.tabcard-lines i {
+  height: 7px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.tabcard-lines i:nth-child(1) {
+  width: 84%;
+}
+
+.tabcard-lines i:nth-child(2) {
+  width: 62%;
+}
+
+.tabcard-lines i:nth-child(3) {
+  width: 73%;
+}
+
+.tabcard-foot {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.tabcard-meter {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  overflow: hidden;
+}
+
+.tabcard-meter i {
+  display: block;
+  height: 100%;
+  background: var(--moss);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+}
+
+.tabcard-time {
+  font: 500 0.6875rem/1 var(--mono);
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.tabcard[aria-pressed='true'] .tabcard-time {
+  color: var(--moss);
+}
+
+/* The product */
 
 .hero-demo {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
+  padding: 0 var(--gutter);
 }
 
 /* The popup changes height as it is used (menus, settings). The slot is as
@@ -319,18 +476,31 @@ h2 {
   transition: height 0.5s var(--ease);
 }
 
-/* Hero stage: a browser window whose page is the tab being refreshed, with
-   the popup open over it as it would be in Chrome. */
+/* A browser window whose page is the tab being refreshed, with the popup open
+   over it as it would be in Chrome. A soft shadow grounds it on the page. */
 .stage {
   position: relative;
   width: 100%;
-  max-width: 760px;
+  max-width: 1040px;
+}
+
+.stage::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  right: 5%;
+  bottom: 30px;
+  left: 5%;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(40, 52, 34, 0.26), transparent);
+  filter: blur(8px);
 }
 
 .stage .slot {
   position: relative;
   place-items: start end;
-  padding: 58px 22px 0 0;
+  padding: 58px 26px 0 0;
 }
 
 .browser {
@@ -338,7 +508,7 @@ h2 {
   inset: 0 0 56px 0;
   display: flex;
   flex-direction: column;
-  border-radius: var(--radius);
+  border-radius: 18px;
   background: #fff;
   box-shadow: 0 0 0 1px var(--hair);
   overflow: hidden;
@@ -350,7 +520,7 @@ h2 {
   gap: 14px;
   height: 46px;
   padding: 0 16px;
-  background: color-mix(in srgb, var(--ink) 5%, #fff);
+  background: #ecece6;
 }
 
 .dots {
@@ -412,7 +582,7 @@ h2 {
   margin: 8px 16px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--ink) 5%, #fff);
+  background: #f1f1ec;
   font: 400 0.75rem var(--mono);
   color: color-mix(in srgb, var(--ink) 60%, transparent);
 }
@@ -430,8 +600,41 @@ h2 {
 }
 
 .page {
+  display: grid;
   flex: 1;
-  padding: 18px 24px;
+  grid-template-columns: 150px 1fr;
+}
+
+.page-side {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 26px 22px;
+  border-right: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+}
+
+.page-side i {
+  height: 9px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.page-side i:first-child {
+  width: 70%;
+  background: var(--moss);
+  opacity: 0.75;
+}
+
+.page-side i:nth-child(3) {
+  width: 80%;
+}
+
+.page-side i:nth-child(4) {
+  width: 60%;
+}
+
+.page-main {
+  padding: 20px 26px;
 }
 
 .page-h {
@@ -442,7 +645,7 @@ h2 {
   letter-spacing: -0.03em;
 }
 
-.page-h span {
+.page-h span + span {
   font: 400 0.6875rem var(--mono);
   letter-spacing: 0;
   color: var(--moss);
@@ -451,7 +654,7 @@ h2 {
 .rows {
   display: grid;
   gap: 2px;
-  max-width: 44%;
+  max-width: 440px;
   margin-top: 12px;
 }
 
@@ -460,7 +663,7 @@ h2 {
   grid-template-columns: 30px 1fr;
   gap: 5px 12px;
   align-items: center;
-  padding: 9px 0;
+  padding: 10px 0;
   border-top: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
 }
 
@@ -484,11 +687,8 @@ h2 {
   background: color-mix(in srgb, var(--ink) 20%, transparent);
 }
 
-/* The newest message, which arrives with each refresh. */
-.rows li.is-new i {
-  background: var(--moss);
-}
-
+/* The newest item, which arrives with each refresh. */
+.rows li.is-new i,
 .rows li.is-new span:first-of-type {
   background: var(--moss);
 }
@@ -498,7 +698,7 @@ h2 {
   align-items: center;
   gap: 9px;
   font: 400 0.75rem/1.4 var(--mono);
-  color: color-mix(in srgb, var(--fg) 66%, transparent);
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
 }
 
 .live-dot {
@@ -520,15 +720,17 @@ h2 {
 
 .facts {
   position: relative;
-  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-top: clamp(34px, 5vw, 60px);
-  border-top: 1px solid var(--hair);
+  max-width: 1040px;
+  margin: clamp(44px, 6vw, 76px) auto 0;
+  padding: 0 var(--gutter) clamp(50px, 7vw, 90px);
+  box-sizing: content-box;
 }
 
 .facts div {
   padding: 18px 0 0;
+  border-top: 1px solid var(--hair);
 }
 
 .facts dt {
@@ -545,7 +747,7 @@ h2 {
 .facts dd {
   margin-top: 6px;
   font: 400 0.75rem/1.4 var(--mono);
-  color: color-mix(in srgb, var(--fg) 66%, transparent);
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
 }
 
 /* How it works: the popup is pinned and re-configured by scrolling. */
@@ -854,16 +1056,45 @@ code {
     display: none;
   }
 
-  .hero,
   .how-pin,
   .install,
   .never-foot {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .hero {
-    row-gap: 54px;
-    padding-top: 104px;
+  .hero-sky {
+    padding-top: 210px;
+    background-size: 42px 42px;
+  }
+
+  .tabcard {
+    width: 150px;
+    padding: 8px 10px 9px;
+    gap: 7px;
+  }
+
+  .tabcard-lines i:nth-child(3),
+  .tabcard-1,
+  .tabcard-3 {
+    display: none;
+  }
+
+  .tabcard-0 {
+    top: 86px;
+    left: 5%;
+  }
+
+  .tabcard-2 {
+    top: 104px;
+    right: 5%;
+  }
+
+  .page-side {
+    display: none;
+  }
+
+  .page {
+    grid-template-columns: 1fr;
   }
 
   .facts {
@@ -881,14 +1112,37 @@ code {
   }
 }
 
-@media (max-width: 900px) {
-  .browser {
+@media (max-width: 760px) {
+  .browser,
+  .stage::after {
     display: none;
   }
 
   .stage .slot {
     place-items: center;
     padding: 0;
+  }
+}
+
+@media (max-width: 1180px) and (min-width: 901px) {
+  .tabcard {
+    width: 164px;
+  }
+
+  .tabcard-0 {
+    left: 2%;
+  }
+
+  .tabcard-1 {
+    left: 5%;
+  }
+
+  .tabcard-2 {
+    right: 2%;
+  }
+
+  .tabcard-3 {
+    right: 5%;
   }
 }
 
@@ -902,15 +1156,11 @@ code {
   }
 }
 
-/* The character waits just off the left edge until scrolling begins. */
-.motion .buddy {
-  translate: -90px 0;
-}
-
 /* With JavaScript running, things that animate in start hidden. Without it,
    or with reduced motion, everything is simply there. */
 .motion [data-load],
 .motion [data-reveal],
+.motion .tabcard,
 .motion .install-steps li {
   opacity: 0;
 }
@@ -938,128 +1188,122 @@ code {
   color: var(--ink);
 }
 
-/* The character: a small timer that walks along the bottom of the window as
-   the page scrolls. Its outer ring is how far down the page you are. */
+/* Tick, the alarm-clock character. The layer covers the whole document and
+   scrolls with it, so while Tick sits on something it stays put on it. */
 
-.buddy {
-  position: fixed;
-  z-index: 40;
-  bottom: 8px;
-  left: 14px;
-  width: 62px;
-  color: var(--ink);
-  pointer-events: none;
-  transition: color 0.5s var(--ease);
-}
-
-.buddy.on-dark {
-  color: var(--paper);
-}
-
-.buddy svg {
+.tick-sky {
+  position: absolute;
+  z-index: 45;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 0;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.tick {
+  --body: #4a6b3a;
+  --bell: #35502a;
+  --foot: #2a3f21;
+  --face: #fbfaf5;
+  --ink: #1b1e19;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46px;
+  height: 46px;
+  will-change: transform;
+}
+
+.tick[hidden] {
+  display: none;
+}
+
+/* Lighter coat on the dark sections. */
+.tick[data-zone='dark'] {
+  --body: #8dbb75;
+  --bell: #6f9f5a;
+  --foot: #d9e6cf;
+}
+
+.tick svg {
+  display: block;
+  width: 100%;
+  height: 100%;
   overflow: visible;
+  transform-origin: 50% 94%;
 }
 
-.buddy-leg path {
+.tick svg * {
+  transition: fill 0.5s, stroke 0.5s;
+}
+
+.t-body {
+  fill: var(--body);
+}
+
+.t-bell,
+.t-foot {
+  fill: var(--bell);
+}
+
+.t-foot {
+  fill: var(--foot);
+}
+
+.t-arm {
   fill: none;
-  stroke: currentColor;
-  stroke-width: 3.6;
+  stroke: var(--bell);
+  stroke-width: 2.6;
   stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
-.buddy-leg {
-  transform-box: view-box;
+.t-face {
+  fill: var(--face);
 }
 
-#legA {
-  transform-origin: 29px 58px;
-}
-
-#legB {
-  transform-origin: 43px 58px;
-}
-
-.buddy-ring {
+.t-marks {
   fill: none;
-  stroke: currentColor;
-  stroke-width: 2.4;
+  stroke: #c9cbc2;
+  stroke-width: 1.5;
   stroke-linecap: round;
-  stroke-dasharray: 0 100;
 }
 
-.buddy-disc {
-  fill: var(--moss);
-  stroke: var(--paper);
-  stroke-width: 2.5;
-}
-
-.buddy-eye {
-  fill: #fff;
-}
-
-#pupils circle {
+.t-eye {
   fill: var(--ink);
 }
 
-.buddy-eyes {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: blink 5.5s infinite;
+.t-glint {
+  fill: #fff;
 }
 
-@keyframes blink {
-  0%,
-  94%,
-  100% {
-    transform: scaleY(1);
-  }
-  97% {
-    transform: scaleY(0.08);
-  }
-}
-
-.buddy-smile {
+.t-smile {
   fill: none;
-  stroke: #fff;
-  stroke-width: 2.4;
+  stroke: var(--ink);
+  stroke-width: 1.7;
   stroke-linecap: round;
 }
 
-.buddy-say {
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 0;
-  padding: 7px 12px;
-  border-radius: 14px 14px 14px 4px;
-  background: var(--ink);
-  color: var(--paper);
-  font: 500 0.75rem/1.3 var(--text);
-  white-space: nowrap;
+.t-blush {
+  fill: #e38e63;
+  opacity: 0.55;
+}
+
+.t-ring {
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), background-color 0.5s var(--ease), color 0.5s var(--ease);
 }
 
-.buddy-say.is-on {
-  opacity: 1;
-  transform: none;
-}
-
-.buddy.flip .buddy-say {
-  right: 0;
-  left: auto;
-  border-radius: 14px 14px 4px 14px;
-}
-
-.buddy.on-dark .buddy-say {
-  background: var(--paper);
-  color: var(--ink);
+.t-ring path {
+  fill: none;
+  stroke: var(--body);
+  stroke-width: 2.2;
+  stroke-linecap: round;
 }
 
 @media (max-width: 900px) {
-  .buddy {
-    width: 48px;
+  .tick {
+    width: 38px;
+    height: 38px;
   }
 }

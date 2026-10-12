@@ -117,6 +117,8 @@
       await local.set({ settings: { ...settings, ...patch } });
     },
     start: () => chrome.runtime.sendMessage({ type: 'start', tabId: 11 }),
+    pick: (tabId) => chrome.runtime.sendMessage({ type: 'start', tabId }),
+    run: async () => (await chrome.storage.session.get('run')).run ?? null,
   };
 
   addEventListener('load', () => {
