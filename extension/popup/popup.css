@@ -890,9 +890,10 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 42px;
+  min-height: 37px;
   padding: 0 10px 0 12px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .row + .row {
@@ -901,6 +902,36 @@ svg {
 
 label.row {
   cursor: pointer;
+}
+
+.apply {
+  height: 26px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: var(--solid);
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.15s var(--ease);
+}
+
+.apply:hover {
+  background: var(--solid-press);
+}
+
+.apply:active {
+  transform: scale(0.96);
+}
+
+/* Shown once the careful settings are all in force. */
+.apply[disabled] {
+  background: var(--surface-2);
+  color: var(--muted);
+  cursor: default;
+}
+
+.chips-sm .chip {
+  min-width: 0;
 }
 
 .row-link {

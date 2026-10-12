@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-version="1.0.2" data-theme="light" data-accent="moss">
+<html lang="en" data-version="1.1.0" data-theme="light" data-accent="moss">
 <head>
   <meta charset="utf-8">
   <title>Dammer live demo</title>
@@ -109,14 +109,22 @@
 
         <h3 class="label">Behaviour</h3>
         <div class="panel">
+          <div class="row" title="Slower refreshes, a 1-hour auto-stop, pause while you are on the tab, and stop after 5 minutes away">
+            <span>Careful settings</span>
+            <button class="apply" id="careful" type="button">Apply</button>
+          </div>
           <div class="row" title="Stops the timer by itself after this long">
             <span id="autoStopLabel">Auto-stop</span>
             <div class="chips chips-sm" id="autoStop" role="radiogroup" aria-labelledby="autoStopLabel"></div>
           </div>
-          <label class="row" title="Never reloads the tab while you are looking at it">
-            <span>Pause while I’m on the tab</span>
-            <input type="checkbox" class="switch" id="skipWhenActive" role="switch">
-          </label>
+          <div class="row" title="What happens when a refresh is due while you are looking at the tab">
+            <span id="onTabLabel">On the tab</span>
+            <div class="chips chips-sm" id="onTab" role="radiogroup" aria-labelledby="onTabLabel"></div>
+          </div>
+          <div class="row" title="Stops the timer once the computer has not been used for this long, or is locked">
+            <span id="awayLabel">Stop if away</span>
+            <div class="chips chips-sm" id="away" role="radiogroup" aria-labelledby="awayLabel"></div>
+          </div>
           <label class="row" title="Stops Chrome putting the tab to sleep in the background">
             <span>Keep the tab awake</span>
             <input type="checkbox" class="switch" id="keepAwake" role="switch">
@@ -129,10 +137,6 @@
             <span>Toolbar badge</span>
             <input type="checkbox" class="switch" id="badge" role="switch">
           </label>
-          <div class="row" title="Change it at chrome://extensions/shortcuts">
-            <span>Start / stop shortcut</span>
-            <kbd id="shortcut">—</kbd>
-          </div>
         </div>
 
         <div class="panel">
@@ -179,6 +183,13 @@
             <span class="row-main">Source code</span>
             <span class="row-value">AleenaTahir1/dammer</span>
           </a>
+        </div>
+
+        <div class="panel">
+          <div class="row" title="Change it at chrome://extensions/shortcuts">
+            <span>Start / stop shortcut</span>
+            <kbd id="shortcut">—</kbd>
+          </div>
         </div>
       </div>
     </section>

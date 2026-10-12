@@ -20,6 +20,12 @@ export const STEPS = [30, 45, 60, 90, 120, 150, 180, 240, 300, 360, 480, 600, 72
 // Auto-stop choices, in minutes. 0 means run until stopped by hand.
 export const AUTO_STOP = [60, 120, 240, 480, 0];
 
+// What to do when a refresh is due while the user is looking at the tab.
+export const ON_TAB = ['refresh', 'pause', 'stop'];
+
+// Stop once the computer has gone unused for this many minutes. 0 keeps going.
+export const AWAY = [0, 5, 15, 30];
+
 export const THEMES = ['auto', 'light', 'dark', 'glass'];
 export const TIMERS = ['digital', 'analog'];
 export const ACCENTS = ['moss', 'pine', 'clay', 'ochre', 'slate'];
@@ -29,7 +35,8 @@ export const DEFAULTS = Object.freeze({
   customMinSec: 180,
   customMaxSec: 300,
   autoStopMin: 120,
-  skipWhenActive: true,
+  onTab: 'pause',
+  awayMin: 0,
   keepAwake: true,
   hardRefresh: false,
   badge: true,
@@ -37,6 +44,10 @@ export const DEFAULTS = Object.freeze({
   timer: 'digital',
   accent: 'moss',
 });
+
+// One tap in settings applies these: slower refreshes, a shorter auto-stop, and
+// a timer that only runs while someone is at the computer.
+export const CAREFUL = Object.freeze({ mode: '8-12', autoStopMin: 60, onTab: 'pause', awayMin: 5 });
 
 const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
 
@@ -51,7 +62,11 @@ export function normalize(raw = {}) {
   s.minSec = preset ? preset.minSec : s.customMinSec;
   s.maxSec = preset ? preset.maxSec : s.customMaxSec;
   s.autoStopMin = AUTO_STOP.includes(s.autoStopMin) ? s.autoStopMin : DEFAULTS.autoStopMin;
-  s.skipWhenActive = Boolean(s.skipWhenActive);
+  // Before 1.1 this was an on/off switch called skipWhenActive.
+  if (raw.onTab === undefined && raw.skipWhenActive === false) s.onTab = 'refresh';
+  delete s.skipWhenActive;
+  s.onTab = ON_TAB.includes(s.onTab) ? s.onTab : DEFAULTS.onTab;
+  s.awayMin = AWAY.includes(s.awayMin) ? s.awayMin : DEFAULTS.awayMin;
   s.keepAwake = Boolean(s.keepAwake);
   s.hardRefresh = Boolean(s.hardRefresh);
   s.badge = Boolean(s.badge);

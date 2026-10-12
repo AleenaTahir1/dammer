@@ -18,7 +18,7 @@ Needs Node 22 or newer, Google Chrome and `openssl`. Set `CHROME=/path/to/chrome
 
 The test starts Chrome headless with a temporary profile, loads the unpacked extension through the DevTools protocol, and opens the real popup page. Two made-up sites (`mail.example.com` and `*.other.test`) are mapped to a small local HTTPS server, so the test never touches the network or your own browser profile. Because the extension runs in a real browser, the real `chrome.alarms`, `chrome.tabs`, `chrome.storage`, `chrome.idle` and `chrome.action` APIs are exercised.
 
-It runs 53 checks, grouped as:
+It runs 58 checks, grouped as:
 
 | Area | What is verified |
 | --- | --- |
@@ -31,9 +31,9 @@ It runs 53 checks, grouped as:
 | Refreshing | "Refresh now" and an alarm each reload the page exactly once (counted by the local server) and schedule the next refresh in range. |
 | Resilience | After the service worker is killed, the next alarm wakes it and the run continues. |
 | Tab picker | Lists every open page, moves a running timer to another tab, works on a second site, scrolls and grows the popup with many tabs. |
-| Stop reasons | Manual stop, tab moved to another site, login redirect, auto-stop, tab closed. Also that moving within the same site does not stop it. |
+| Stop reasons | Manual stop, tab moved to another site, login redirect, auto-stop, away from the computer, tab closed. Also that moving within the same site does not stop it. |
 | Remembered tab | A closed tab is named and can be reopened at the remembered address. |
-| Settings | Fit without scrolling, theme and colour apply and are cached, Reset works, custom range survives trying a preset. |
+| Settings | Fit without scrolling, theme and colour apply and are cached, Reset works, custom range survives trying a preset, Careful settings applies in one tap, the old pause switch carries over. |
 | About and Glass | Version and links are correct; glass theme applies without changing the popup size. |
 | Console | No errors or warnings in the popup or the service worker. |
 

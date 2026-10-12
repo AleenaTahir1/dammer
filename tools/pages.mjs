@@ -39,8 +39,10 @@ export const FAQ = [
       ['What refresh intervals can I set?', `Four presets (2–3, 3–5, 5–8 and 8–12 minutes) or a custom range from 30 seconds to 60 minutes. Each refresh happens at a random moment inside the range. Set both ends of a custom range to the same value if you want a fixed interval.`],
       ['Can it refresh more than one tab at a time?', `No. Dammer refreshes one tab at a time. Choosing a different tab while it is running moves the timer to that tab.`],
       ['Does it keep refreshing when the tab is in the background?', `Yes. The timer runs in Chrome itself, not inside the page, so it keeps working when you switch tabs or minimise the window, and Dammer stops Chrome's Memory Saver from putting the tab to sleep. Chrome has to be open, and refreshing pauses while the computer is asleep.`],
-      ['Will it reload the page while I am typing?', `Not while you are using the tab. With <strong>Pause while I'm on the tab</strong> switched on (the default), Dammer skips a refresh whenever the tab is in front and the computer has been used in the last minute.`],
+      ['Will it reload the page while I am typing?', `Not while you are using the tab. With <strong>On the tab</strong> set to Pause (the default), Dammer skips a refresh whenever the tab is in front and the computer has been used in the last minute. Set it to Stop and the timer ends as soon as you come back to the tab.`],
       ['How do I stop it?', `Press <strong>Stop</strong> in the popup, or press <code>Alt+Shift+R</code> from any tab. It also stops by itself after the auto-stop time (2 hours by default), when the tab is closed, when the tab moves to a different site, or when the site sends it to a login page.`],
+      ['Can it stop when I leave my computer?', `Yes. Turn on <strong>Stop if away</strong> in settings and choose 5, 15 or 30 minutes. Once the computer has gone unused for that long, or is locked, the timer stops at the next refresh instead of running unattended.`],
+      ['What does "Careful settings" do?', `One tap applies a cautious set-up: refresh every 8–12 minutes, auto-stop after 1 hour, pause while you are on the tab, and stop after 5 minutes away. You can still change each setting afterwards.`],
       ['What is the difference between the digital and analog timer?', `Only how the countdown looks. Digital shows large numbers with a progress bar; analog shows a clock face whose hand sweeps round once per cycle. Switch between them in Settings.`],
     ],
   },
@@ -109,7 +111,7 @@ const PAGES = [
 <ul>
   <li><code>alarms</code>: to wake the extension when a refresh is due.</li>
   <li><code>storage</code>: for the items in the table above.</li>
-  <li><code>idle</code>: to learn whether the computer has been used in the last minute, for the "Pause while I'm on the tab" setting. Dammer receives only "active", "idle" or "locked".</li>
+  <li><code>idle</code>: to learn whether the computer has been used recently, for the "On the tab" and "Stop if away" settings. Dammer receives only "active", "idle" or "locked".</li>
 </ul>
 <p>Each one is explained on the <a href="../security/#permissions">security and permissions page</a>.</p>
 
@@ -152,7 +154,7 @@ const PAGES = [
     <tr><td><code>tabs</code></td><td>"Read your browsing history"</td><td>Reading the title and address of open tabs, to list them in the tab picker and to notice when the chosen tab has left its site.</td></tr>
     <tr><td><code>alarms</code></td><td>None</td><td>Waking the background script when a refresh or the auto-stop is due.</td></tr>
     <tr><td><code>storage</code></td><td>None</td><td>Saving your settings and chosen tab on your computer.</td></tr>
-    <tr><td><code>idle</code></td><td>None</td><td>Learning whether the computer was used in the last minute, so a tab you are looking at is not reloaded.</td></tr>
+    <tr><td><code>idle</code></td><td>None</td><td>Learning whether the computer was used recently, so a tab you are looking at is not reloaded and the timer can stop when you step away.</td></tr>
   </tbody>
 </table></div>
 <p>Chrome words the <code>tabs</code> permission as "Read your browsing history" because tab addresses reveal which sites are open. Dammer reads them only while the popup is open or a refresh is due, keeps at most one trimmed address (the tab you chose), and has no way to send anything anywhere.</p>
@@ -173,7 +175,7 @@ const PAGES = [
 <ul>
   <li><strong>Read the code.</strong> The extension is about 2,300 lines of plain HTML, CSS and JavaScript in the <a href="${REPO}/tree/main/extension">extension folder</a>.</li>
   <li><strong>Rebuild the download.</strong> Release zips are built by a public <a href="${REPO}/blob/main/.github/workflows/release.yml">GitHub Actions workflow</a> from the tagged commit. Run <code>npm run build</code> and compare.</li>
-  <li><strong>Run the tests.</strong> <code>npm test</code> drives the real extension in a real copy of Chrome and runs 53 checks, including that reloads happen exactly once and that the timer survives the background script being stopped.</li>
+  <li><strong>Run the tests.</strong> <code>npm test</code> drives the real extension in a real copy of Chrome and runs 58 checks, including that reloads happen exactly once and that the timer survives the background script being stopped.</li>
   <li><strong>Watch the network.</strong> Open the popup, right-click it, choose Inspect and look at the Network tab. It stays empty.</li>
 </ul>
 
@@ -239,7 +241,8 @@ const PAGES = [
     <tr><td>The Start button is greyed out</td><td>No tab is chosen. Open the <strong>Tab</strong> list and pick a page.</td></tr>
     <tr><td>The page you want is not in the Tab list</td><td>Only ordinary web pages are listed. Browser pages such as <code>chrome://settings</code> cannot be refreshed.</td></tr>
     <tr><td><code>Alt+Shift+R</code> does nothing</td><td>Another extension may use the same keys. Set a different shortcut at <code>chrome://extensions/shortcuts</code>.</td></tr>
-    <tr><td>It says "Paused while you're on the tab"</td><td>That is the setting protecting whatever you are typing. Switch to another tab, or turn the setting off.</td></tr>
+    <tr><td>It says "Paused while you're on the tab"</td><td>That is the setting protecting whatever you are typing. Switch to another tab, or change <strong>On the tab</strong> to Refresh in settings.</td></tr>
+    <tr><td>It says "Stopped: you were away"</td><td><strong>Stop if away</strong> is on and the computer went unused. Press Start again, or set it to Off in settings.</td></tr>
   </tbody>
 </table></div>
 <p>More answers are in the <a href="../faq/">FAQ</a>. If you have found a bug, <a href="${REPO}/issues">open an issue</a>.</p>`,
@@ -277,6 +280,14 @@ const PAGES = [
     lede: `The current version is ${version}. Every release is on GitHub with its download.`,
     body: `
 <p><a class="pill pill-solid" href="${RELEASES}"><span>Download ${version}</span><small>free</small></a></p>
+
+<h2 id="v1-1-0">1.1.0 <span class="doc-when">12 October 2026</span></h2>
+<ul>
+  <li><strong>On the tab</strong>: choose what happens when a refresh is due while you are looking at the tab: refresh anyway, pause, or stop the timer.</li>
+  <li><strong>Stop if away</strong>: stops the timer once the computer has not been used for 5, 15 or 30 minutes, or is locked.</li>
+  <li><strong>Careful settings</strong>: one tap sets slower refreshes, a 1-hour auto-stop, pause on the tab and stop after 5 minutes away.</li>
+  <li>The keyboard shortcut is now shown on the About page.</li>
+</ul>
 
 <h2 id="v1-0-2">1.0.2 <span class="doc-when">12 October 2026</span></h2>
 <ul>

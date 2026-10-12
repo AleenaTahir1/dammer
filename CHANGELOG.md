@@ -2,6 +2,19 @@
 
 All notable changes to Dammer are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-10-12
+
+### Added
+
+- **On the tab**: choose what happens when a refresh is due while you are looking at the tab: refresh anyway, pause, or stop the timer.
+- **Stop if away**: stops the timer once the computer has not been used for 5, 15 or 30 minutes, or is locked.
+- **Careful settings**: one tap sets slower refreshes (8–12 minutes), a 1-hour auto-stop, pause on the tab and stop after 5 minutes away.
+
+### Changed
+
+- "Pause while I'm on the tab" is now the Pause option of **On the tab**. An existing choice is carried over.
+- The keyboard shortcut is shown on the About page.
+
 ## [1.0.2] - 2026-10-12
 
 ### Changed
@@ -35,6 +48,7 @@ First public release.
 - About page with the version number and developer links.
 - End-to-end test suite that runs the extension in real Chrome.
 
+[1.1.0]: https://github.com/AleenaTahir1/dammer/releases/tag/v1.1.0
 [1.0.2]: https://github.com/AleenaTahir1/dammer/releases/tag/v1.0.2
 [1.0.1]: https://github.com/AleenaTahir1/dammer/releases/tag/v1.0.1
 [1.0.0]: https://github.com/AleenaTahir1/dammer/releases/tag/v1.0.0

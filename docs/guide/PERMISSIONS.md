@@ -7,7 +7,7 @@ Dammer asks for four permissions and no host access.
 | `tabs` | "Read your browsing history" | Reading the title and address of open tabs, to list them in the tab picker and to detect that the chosen tab has left its site. | `resolveTarget()` in `src/shared.js`; `tick()` in `src/background.js` |
 | `alarms` | none | Waking the service worker when a refresh or the auto-stop is due. | `src/background.js` |
 | `storage` | none | Saving settings and the chosen tab locally. | `src/shared.js`, `src/background.js`, `popup/popup.js` |
-| `idle` | none | Learning whether the computer was used in the last minute, for "Pause while I'm on the tab". | `skipReason()` in `src/background.js` |
+| `idle` | none | Learning whether the computer was used recently, for the "On the tab" and "Stop if away" settings. | `watching()` and `tick()` in `src/background.js` |
 
 ## About the `tabs` warning
 

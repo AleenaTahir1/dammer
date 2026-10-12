@@ -151,6 +151,11 @@ async function tick({ force = false } = {}) {
   }
 
   const settings = await getSettings();
+  if (!force) {
+    // Nobody has touched the computer for the chosen time, or it is locked.
+    if (settings.awayMin && (await chrome.idle.queryState(settings.awayMin * 60)) !== 'active') return stop('away');
+    if (settings.onTab === 'stop' && (await watching(tab))) return stop('opened');
+  }
   let skipped = force ? null : await skipReason(tab, settings);
   if (!skipped) {
     try {
@@ -173,14 +178,18 @@ async function tick({ force = false } = {}) {
 
 async function skipReason(tab, settings) {
   if (tab.status === 'loading') return 'loading';
-  if (settings.skipWhenActive && tab.active) {
-    const win = await chrome.windows.get(tab.windowId).catch(() => null);
-    // Someone who has not touched the computer for a minute is not looking at
-    // the tab, so walking away with it in front does not stall the timer.
-    if (win?.focused && (await chrome.idle.queryState(60)) === 'active') return 'active';
-  }
+  if (settings.onTab === 'pause' && (await watching(tab))) return 'active';
   if (navigator.onLine === false) return 'offline';
   return null;
+}
+
+// Whether the user is looking at the tab: it is in front, its window has
+// focus, and the computer was used in the last minute. Someone who walked away
+// with the tab in front is not looking at it.
+async function watching(tab) {
+  if (!tab.active) return false;
+  const win = await chrome.windows.get(tab.windowId).catch(() => null);
+  return Boolean(win?.focused) && (await chrome.idle.queryState(60)) === 'active';
 }
 
 async function onAutoStop() {

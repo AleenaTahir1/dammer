@@ -39,7 +39,7 @@ The About page contains links to the developer's GitHub and LinkedIn profiles. T
 
 - `alarms`: to wake the extension when a refresh is due.
 - `storage`: for the items in the table above.
-- `idle`: to learn whether the computer has been used in the last minute, for the "Pause while I'm on the tab" setting. Dammer receives only "active", "idle" or "locked".
+- `idle`: to learn whether the computer has been used recently, for the "On the tab" and "Stop if away" settings. Dammer receives only "active", "idle" or "locked".
 
 ## Removing your data
 

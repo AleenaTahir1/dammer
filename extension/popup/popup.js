@@ -1,7 +1,10 @@
 import {
   ACCENTS,
   AUTO_STOP,
+  AWAY,
+  CAREFUL,
   DEFAULTS,
+  ON_TAB,
   PRESETS,
   STEPS,
   THEMES,
@@ -44,15 +47,20 @@ const els = {
   timer: $('timer'),
   accent: $('accent'),
   autoStop: $('autoStop'),
+  onTab: $('onTab'),
+  away: $('away'),
+  careful: $('careful'),
 };
 
-const SWITCHES = ['skipWhenActive', 'keepAwake', 'hardRefresh', 'badge'];
+const SWITCHES = ['keepAwake', 'hardRefresh', 'badge'];
 
 const STOP_NOTES = {
   closed: 'Stopped: tab closed',
   left: 'Stopped: tab left the site',
   'signed-out': 'Stopped: login page',
   timer: 'Auto-stop reached',
+  away: 'Stopped: you were away',
+  opened: 'Stopped: you opened the tab',
 };
 
 const HOLD_NOTES = {
@@ -199,6 +207,9 @@ function bind() {
 
   onPick(els.presets, (mode) => saveSettings({ mode }));
   onPick(els.autoStop, (value) => saveSettings({ autoStopMin: Number(value) }));
+  onPick(els.onTab, (onTab) => saveSettings({ onTab }));
+  onPick(els.away, (value) => saveSettings({ awayMin: Number(value) }));
+  els.careful.addEventListener('click', () => saveSettings({ ...CAREFUL }));
   onPick(els.theme, (theme) => saveSettings({ theme }));
   onPick(els.timer, (timer) => saveSettings({ timer }));
   onPick(els.accent, (accent) => saveSettings({ accent }));
@@ -321,6 +332,8 @@ function buildControls() {
   const title = (word) => word[0].toUpperCase() + word.slice(1);
   els.presets.replaceChildren(...PRESETS.map((p) => option('chip', p.id, p.label)), option('chip', 'custom', 'Custom'));
   els.autoStop.replaceChildren(...AUTO_STOP.map((min) => option('chip', min, min ? `${min / 60}h` : 'Off')));
+  els.onTab.replaceChildren(...ON_TAB.map((choice) => option('chip', choice, title(choice))));
+  els.away.replaceChildren(...AWAY.map((min) => option('chip', min, min ? `${min}m` : 'Off')));
   els.theme.replaceChildren(...THEMES.map((theme) => option('chip', theme, title(theme))));
   els.timer.replaceChildren(...TIMERS.map((timer) => option('chip', timer, title(timer))));
   els.accent.replaceChildren(
@@ -352,6 +365,11 @@ function render() {
 
   select(els.presets, settings.mode);
   select(els.autoStop, settings.autoStopMin);
+  select(els.onTab, settings.onTab);
+  select(els.away, settings.awayMin);
+  const careful = Object.entries(CAREFUL).every(([key, value]) => settings[key] === value);
+  els.careful.disabled = careful;
+  els.careful.textContent = careful ? 'On' : 'Apply';
   select(els.theme, settings.theme);
   select(els.timer, settings.timer);
   select(els.accent, settings.accent);

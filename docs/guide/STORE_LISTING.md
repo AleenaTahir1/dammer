@@ -46,7 +46,7 @@ Private, lightweight auto-refresh for any tab. Randomised intervals, auto-stop, 
 | `tabs` | Needed to show the user's open tabs by title and address so they can choose which one to refresh, and to detect when the chosen tab has navigated to a different site so the timer can stop. |
 | `alarms` | Needed to schedule the next refresh and the automatic stop while the service worker is asleep. |
 | `storage` | Needed to save the user's settings and chosen tab on their device. |
-| `idle` | Needed to tell whether the user is at the computer, so a tab they are looking at is not reloaded. |
+| `idle` | Needed to tell whether the user is at the computer, so a tab they are looking at is not reloaded and the timer can stop when they step away. |
 
 **Remote code:** No. All code is in the package.
 

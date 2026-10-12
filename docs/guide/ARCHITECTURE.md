@@ -20,7 +20,7 @@ Chrome stops an extension's service worker after about 30 seconds of inactivity,
 - **State.** The running timer (`run`) lives in `chrome.storage.session`: tab id, address, start time, next refresh time, count. Settings and the remembered tab live in `chrome.storage.local`.
 - **Timing.** One one-shot alarm, `refresh`, is set for the next refresh. When it fires, `tick()` reloads the tab and sets the next alarm with a fresh random delay. A second alarm, `auto-stop`, ends the run. Alarms survive the worker being stopped; that is the whole reason they are used instead of `setTimeout`.
 - **Order.** Alarms, messages and tab events can arrive while an earlier one is still awaiting storage, so every handler goes through `serial()`, a one-at-a-time queue.
-- **Stop conditions.** Before each reload `tick()` checks that the tab still exists, is on the same site as last cycle, and has not been redirected to a login page. Any failure ends the run with a reason the popup can show.
+- **Stop conditions.** Before each reload `tick()` checks that the tab still exists, is on the same site as last cycle, and has not been redirected to a login page. With the matching settings on, it also stops when the computer has gone unused for the chosen time, or when the user is looking at the tab. Any of these ends the run with a reason the popup can show.
 - **Skip conditions.** A reload is skipped, and the cycle simply continues, while the tab is still loading, while the machine is offline, or while the tab is in front of a focused window and the computer has been used in the last minute.
 - **Recovery.** On browser start and on install or update, `reconcile()` clears alarms that have no run and releases a tab that was left protected from Memory Saver.
 

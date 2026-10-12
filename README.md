@@ -33,8 +33,9 @@ Most auto-refresh extensions ask to read and change every website you visit, and
 - **Randomised intervals.** Each refresh lands at a random moment inside the range you choose (2–3, 3–5, 5–8, 8–12 minutes, or a custom range from 30 seconds to 60 minutes).
 - **Two clocks.** A digital countdown with a progress bar, or an analog face whose hand sweeps once per cycle.
 - **Three themes, five colours.** Light, dark and a frosted glass theme, each with five accent colours. Follows your system theme by default.
-- **Never interrupts you.** It will not reload a tab while you are looking at it, so a half-typed message is safe.
-- **Stops by itself.** After a set time (1–8 hours), when the tab is closed, when it moves to a different site, or when the site bounces it to a login page.
+- **Never interrupts you.** It will not reload a tab while you are looking at it, so a half-typed message is safe. Or have it stop altogether when you open the tab.
+- **Stops by itself.** After a set time (1–8 hours), when you have been away from the computer, when the tab is closed, when it moves to a different site, or when the site bounces it to a login page.
+- **Careful settings in one tap.** Slower refreshes, a one-hour auto-stop, and a timer that only runs while you are at the computer.
 - **Light on your computer.** The background script sleeps between refreshes and wakes for a few milliseconds each cycle. The countdown only runs while the popup is open.
 - **Keyboard shortcut.** `Alt+Shift+R` starts or stops from any tab.
 
@@ -65,8 +66,10 @@ The circular arrow next to **Stop** refreshes immediately. The sliders icon open
 | Theme | Auto, Light, Dark or Glass | Auto |
 | Timer | Digital or Analog | Digital |
 | Colour | Accent colour | Moss green |
+| Careful settings | One tap sets: refresh every 8–12 minutes, auto-stop after 1 hour, pause on the tab, stop after 5 minutes away | Not applied |
 | Auto-stop | Stops the timer after 1, 2, 4 or 8 hours, or never | 2 hours |
-| Pause while I'm on the tab | Skips a refresh while the tab is in front and you are at the computer | On |
+| On the tab | What happens when a refresh is due while you are looking at the tab: Refresh anyway, Pause (skip it), or Stop the timer | Pause |
+| Stop if away | Stops the timer once the computer has not been used for 5, 15 or 30 minutes, or is locked | Off |
 | Keep the tab awake | Stops Chrome's Memory Saver from unloading the tab | On |
 | Hard refresh | Bypasses the cache on every reload | Off |
 | Toolbar badge | Shows `ON` on the icon while running | On |
@@ -109,7 +112,7 @@ docs/                the website (GitHub Pages), its live demo, screenshots and 
 | Command | What it does |
 | --- | --- |
 | `npm run check` | Validates the manifest, parses every script and fails if networking code appears. No browser needed. |
-| `npm test` | Launches Chrome with a throwaway profile, loads the extension and runs 53 checks against local stand-in sites. Also retakes the screenshots. Needs Node 22+, Chrome and `openssl`. |
+| `npm test` | Launches Chrome with a throwaway profile, loads the extension and runs 58 checks against local stand-in sites. Also retakes the screenshots. Needs Node 22+, Chrome and `openssl`. |
 | `npm run build` | Writes `dist/dammer-<version>.zip`. |
 | `npm run site` | Copies the popup into `docs/demo/` so the website's live demo matches the extension, and rebuilds the site's inner pages and `sitemap.xml` from `tools/pages.mjs`. |
 

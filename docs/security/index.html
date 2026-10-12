@@ -71,7 +71,7 @@
     <tr><td><code>tabs</code></td><td>"Read your browsing history"</td><td>Reading the title and address of open tabs, to list them in the tab picker and to notice when the chosen tab has left its site.</td></tr>
     <tr><td><code>alarms</code></td><td>None</td><td>Waking the background script when a refresh or the auto-stop is due.</td></tr>
     <tr><td><code>storage</code></td><td>None</td><td>Saving your settings and chosen tab on your computer.</td></tr>
-    <tr><td><code>idle</code></td><td>None</td><td>Learning whether the computer was used in the last minute, so a tab you are looking at is not reloaded.</td></tr>
+    <tr><td><code>idle</code></td><td>None</td><td>Learning whether the computer was used recently, so a tab you are looking at is not reloaded and the timer can stop when you step away.</td></tr>
   </tbody>
 </table></div>
 <p>Chrome words the <code>tabs</code> permission as "Read your browsing history" because tab addresses reveal which sites are open. Dammer reads them only while the popup is open or a refresh is due, keeps at most one trimmed address (the tab you chose), and has no way to send anything anywhere.</p>
@@ -92,7 +92,7 @@
 <ul>
   <li><strong>Read the code.</strong> The extension is about 2,300 lines of plain HTML, CSS and JavaScript in the <a href="https://github.com/AleenaTahir1/dammer/tree/main/extension">extension folder</a>.</li>
   <li><strong>Rebuild the download.</strong> Release zips are built by a public <a href="https://github.com/AleenaTahir1/dammer/blob/main/.github/workflows/release.yml">GitHub Actions workflow</a> from the tagged commit. Run <code>npm run build</code> and compare.</li>
-  <li><strong>Run the tests.</strong> <code>npm test</code> drives the real extension in a real copy of Chrome and runs 53 checks, including that reloads happen exactly once and that the timer survives the background script being stopped.</li>
+  <li><strong>Run the tests.</strong> <code>npm test</code> drives the real extension in a real copy of Chrome and runs 58 checks, including that reloads happen exactly once and that the timer survives the background script being stopped.</li>
   <li><strong>Watch the network.</strong> Open the popup, right-click it, choose Inspect and look at the Network tab. It stays empty.</li>
 </ul>
 
