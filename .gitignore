@@ -1,0 +1,11 @@
+# Build output
+dist/
+
+# Private working notes, not part of the project
+research_notes/
+reports/
+
+# Local tooling
+node_modules/
+.claude/
+.DS_Store
