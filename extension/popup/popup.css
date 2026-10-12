@@ -989,6 +989,21 @@ label.row {
   font-variant-numeric: tabular-nums;
 }
 
+.about-thanks {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.about-thanks a {
+  color: var(--text);
+  font-weight: 550;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+}
+
 .about-line {
   margin: 10px 0 12px;
   font-size: 12.5px;

@@ -2,6 +2,13 @@
 
 All notable changes to Dammer are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-10-12
+
+### Added
+
+- Credit for Saqlain Abbas on the About page.
+- Project website with a live demo of the popup: <https://aleenatahir1.github.io/dammer/>.
+
 ## [1.0.0] - 2026-10-12
 
 First public release.
@@ -21,4 +28,5 @@ First public release.
 - About page with the version number and developer links.
 - End-to-end test suite that runs the extension in real Chrome.
 
+[1.0.1]: https://github.com/AleenaTahir1/dammer/releases/tag/v1.0.1
 [1.0.0]: https://github.com/AleenaTahir1/dammer/releases/tag/v1.0.0

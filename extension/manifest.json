@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Dammer — Tab Auto Refresh",
   "short_name": "Dammer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Private, lightweight auto-refresh for any tab. Randomised intervals, auto-stop, analog or digital timer. No tracking.",
   "minimum_chrome_version": "120",
   "permissions": [

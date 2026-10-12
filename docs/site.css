@@ -1,0 +1,1065 @@
+/* Dammer website.
+   Direction: Swiss-precise, product as hero. Paper, ink, one solid moss green.
+   One radius for surfaces (28px), pills for actions, hairlines only where they
+   do work, grain at 4%. All motion uses --ease. */
+
+:root {
+  --paper: #f4f3ee;
+  --ink: #121411;
+  --moss: #3f5e33;
+  --stone: #868a80;
+  --hair: color-mix(in srgb, var(--ink) 13%, transparent);
+
+  --bg: var(--paper);
+  --fg: var(--ink);
+
+  --display: 'Bricolage Grotesque', 'Helvetica Neue', sans-serif;
+  --text: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+
+  --radius: 28px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --section: clamp(6rem, 13vw, 11.5rem);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.55 var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Grain over everything. */
+body::after {
+  content: '';
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+h1,
+h2,
+p,
+ol,
+ul,
+dl,
+dd {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+img,
+svg,
+iframe {
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.skip {
+  position: fixed;
+  z-index: 200;
+  top: 12px;
+  left: 12px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: none;
+}
+
+h1,
+h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.012em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 5.1vw, 5rem);
+}
+
+h2 {
+  font-size: clamp(2.1rem, 3.9vw, 3.75rem);
+}
+
+.soft {
+  color: var(--stone);
+}
+
+.eyebrow {
+  font: 500 0.75rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* A link whose underline wipes in from the left and out to the right. */
+.wipe {
+  padding-bottom: 3px;
+  background: linear-gradient(currentColor, currentColor) no-repeat right bottom / 0 1.5px;
+  transition: background-size 0.5s var(--ease);
+}
+
+.wipe:hover,
+.wipe:focus-visible {
+  background-position: left bottom;
+  background-size: 100% 1.5px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7em;
+  padding: 0.95em 1.5em;
+  border-radius: 999px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: transform 0.4s var(--ease), background-color 0.4s var(--ease), color 0.4s var(--ease);
+}
+
+.pill:hover {
+  transform: translateY(-2px);
+}
+
+.pill:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: 0.1s;
+}
+
+.pill-solid {
+  background: var(--moss);
+  color: var(--paper);
+}
+
+.pill-solid:hover {
+  background: var(--ink);
+}
+
+.pill-solid small {
+  font: 400 0.75rem var(--mono);
+  opacity: 0.72;
+}
+
+.pill-quiet {
+  padding: 0.6em 1.15em;
+  box-shadow: inset 0 0 0 1px var(--hair);
+  font-size: 0.9375rem;
+}
+
+.pill-quiet:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Nav */
+
+.nav {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 40px);
+  padding: 14px var(--gutter);
+  background: color-mix(in srgb, var(--nav-bg, var(--paper)) 78%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: var(--fg);
+  transition: color 0.6s var(--ease), background-color 0.6s var(--ease);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+  font: 700 1.25rem/1 var(--display);
+  letter-spacing: -0.03em;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+}
+
+.mark-disc {
+  fill: var(--moss);
+}
+
+.mark-ring {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 2.56;
+}
+
+.mark-wedge {
+  fill: var(--paper);
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(16px, 2.4vw, 34px);
+  font-size: 0.9375rem;
+}
+
+/* Hero */
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  column-gap: var(--gutter);
+  min-height: 100dvh;
+  padding: 104px var(--gutter) 104px;
+}
+
+.hero-copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(20px, 2.6vw, 34px);
+}
+
+.lede {
+  max-width: 30em;
+  font-size: clamp(1.0625rem, 1.45vw, 1.3125rem);
+  line-height: 1.5;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+}
+
+.hero-demo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* The popup changes height as it is used (menus, settings). The slot is as
+   tall as a popup can ever be, so the page around it never moves. */
+.slot {
+  display: grid;
+  place-items: center;
+  height: 600px;
+}
+
+.device {
+  position: relative;
+  width: 360px;
+}
+
+/* One shadow, so the popup reads as floating over the page behind it. */
+.demo {
+  position: relative;
+  width: 360px;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px var(--hair), 0 30px 60px -22px rgba(18, 20, 17, 0.38);
+  background: #f7f7f5;
+  transition: height 0.5s var(--ease);
+}
+
+/* Hero stage: a browser window whose page is the tab being refreshed, with
+   the popup open over it as it would be in Chrome. */
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+}
+
+.stage .slot {
+  position: relative;
+  place-items: start end;
+  padding: 58px 22px 0 0;
+}
+
+.browser {
+  position: absolute;
+  inset: 0 0 56px 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--hair);
+  overflow: hidden;
+}
+
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 46px;
+  padding: 0 16px;
+  background: color-mix(in srgb, var(--ink) 5%, #fff);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-end;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 12px 12px 0 0;
+  background: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tab-spin {
+  width: 12px;
+  height: 12px;
+  border: 2px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-top-color: var(--moss);
+  border-radius: 50%;
+}
+
+.ext {
+  position: relative;
+  margin-left: auto;
+}
+
+.ext svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ext b {
+  position: absolute;
+  right: -9px;
+  bottom: -5px;
+  padding: 1px 3px;
+  border-radius: 4px;
+  background: var(--moss);
+  color: #fff;
+  font: 600 7.5px/1.2 var(--mono);
+}
+
+.browser-url {
+  margin: 8px 16px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 5%, #fff);
+  font: 400 0.75rem var(--mono);
+  color: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
+.browser-load {
+  height: 2px;
+}
+
+.browser-load i {
+  display: block;
+  height: 100%;
+  background: var(--moss);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.page {
+  flex: 1;
+  padding: 18px 24px;
+}
+
+.page-h {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font: 700 1.5rem/1.2 var(--display);
+  letter-spacing: -0.03em;
+}
+
+.page-h span {
+  font: 400 0.6875rem var(--mono);
+  letter-spacing: 0;
+  color: var(--moss);
+}
+
+.rows {
+  display: grid;
+  gap: 2px;
+  max-width: 44%;
+  margin-top: 12px;
+}
+
+.rows li {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 5px 12px;
+  align-items: center;
+  padding: 9px 0;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+}
+
+.rows i {
+  grid-row: span 2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.rows span {
+  width: var(--w, 70%);
+  height: 8px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.rows span:first-of-type {
+  --w: 46%;
+  background: color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+/* The newest message, which arrives with each refresh. */
+.rows li.is-new i {
+  background: var(--moss);
+}
+
+.rows li.is-new span:first-of-type {
+  background: var(--moss);
+}
+
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font: 400 0.75rem/1.4 var(--mono);
+  color: color-mix(in srgb, var(--fg) 66%, transparent);
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--moss);
+  animation: live 1.8s var(--ease) infinite;
+}
+
+@keyframes live {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--moss) 55%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 9px transparent;
+  }
+}
+
+.facts {
+  position: relative;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: clamp(34px, 5vw, 60px);
+  border-top: 1px solid var(--hair);
+}
+
+.facts div {
+  padding: 18px 0 0;
+}
+
+.facts dt {
+  font: 700 clamp(1.6rem, 2.4vw, 2.25rem)/1 var(--display);
+  letter-spacing: -0.04em;
+}
+
+.facts dt small {
+  margin-left: 0.15em;
+  font-size: 0.42em;
+  letter-spacing: 0;
+}
+
+.facts dd {
+  margin-top: 6px;
+  font: 400 0.75rem/1.4 var(--mono);
+  color: color-mix(in srgb, var(--fg) 66%, transparent);
+}
+
+/* How it works: the popup is pinned and re-configured by scrolling. */
+
+.how {
+  --bg: var(--paper);
+  --fg: var(--ink);
+  background: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.7s var(--ease), color 0.7s var(--ease);
+}
+
+.how.is-dark {
+  --bg: var(--ink);
+  --fg: var(--paper);
+  --hair: color-mix(in srgb, var(--paper) 18%, transparent);
+}
+
+.how-pin {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center;
+  column-gap: var(--gutter);
+  min-height: 100dvh;
+  padding: 96px var(--gutter) 40px;
+}
+
+.how-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.4vw, 30px);
+}
+
+.steps {
+  display: grid;
+  max-width: 34rem;
+  margin-top: clamp(6px, 1.4vw, 18px);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr;
+  width: 100%;
+  padding: 16px 0;
+  border-top: 1px solid var(--hair);
+  opacity: 0.38;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.step:hover {
+  opacity: 0.7;
+  transform: translateX(6px);
+}
+
+.step[aria-current='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.step-n {
+  grid-row: span 2;
+  padding-top: 0.5em;
+  font: 500 0.75rem var(--mono);
+}
+
+.step-t {
+  font: 700 clamp(1.2rem, 1.7vw, 1.55rem)/1.15 var(--display);
+  letter-spacing: -0.03em;
+}
+
+/* Only the current step spells itself out. */
+.step-d {
+  display: grid;
+  grid-template-rows: 0fr;
+  max-width: 26em;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0;
+  transition: grid-template-rows 0.6s var(--ease), opacity 0.4s var(--ease), margin 0.6s var(--ease);
+}
+
+.step-d > span {
+  overflow: hidden;
+}
+
+.step[aria-current='true'] .step-d {
+  grid-template-rows: 1fr;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+.how-demo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--hair);
+}
+
+.rail i {
+  display: block;
+  width: 3px;
+  height: 100%;
+  margin-left: -1px;
+  background: var(--moss);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.how.is-dark .rail i {
+  background: var(--paper);
+}
+
+/* Privacy */
+
+.never {
+  --fg: var(--paper);
+  --hair: color-mix(in srgb, var(--paper) 18%, transparent);
+  display: grid;
+  gap: clamp(22px, 3vw, 40px);
+  padding: var(--section) var(--gutter);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.never-list {
+  margin-top: clamp(10px, 2vw, 30px);
+  border-bottom: 1px solid var(--hair);
+}
+
+.never-list li {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding: clamp(10px, 1.5vw, 20px) 0;
+  font: 600 clamp(1.5rem, 3.4vw, 3.2rem)/1.1 var(--display);
+  letter-spacing: -0.04em;
+  color: color-mix(in srgb, var(--paper) 46%, transparent);
+}
+
+.never-list li::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  border-top: 1px solid var(--hair);
+}
+
+/* The strike draws itself across each line as it scrolls into view. */
+.never-list li::after {
+  content: '';
+  position: absolute;
+  top: 54%;
+  right: -0.12em;
+  left: -0.12em;
+  height: 0.075em;
+  background: var(--paper);
+  transform: scaleX(var(--strike, 0));
+  transform-origin: left;
+}
+
+.never-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  gap: 24px var(--gutter);
+}
+
+.never-foot p {
+  max-width: 34em;
+  color: color-mix(in srgb, var(--paper) 78%, transparent);
+}
+
+.never-foot a {
+  justify-self: start;
+}
+
+/* Screens */
+
+.screens {
+  padding: var(--section) 0;
+  overflow: hidden;
+}
+
+.screens-head {
+  display: grid;
+  gap: clamp(18px, 2.4vw, 30px);
+  padding: 0 var(--gutter);
+}
+
+.screens-track {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(18px, 2.6vw, 40px);
+  width: max-content;
+  margin-top: clamp(40px, 6vw, 84px);
+  padding: 0 var(--gutter);
+  will-change: transform;
+}
+
+.screens-track img {
+  width: clamp(250px, 24vw, 340px);
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--hair);
+}
+
+.screens-track img:nth-child(even) {
+  margin-top: clamp(30px, 5vw, 80px);
+}
+
+/* Install */
+
+.install {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(40px, 6vw, 80px) var(--gutter);
+  padding: 0 var(--gutter) var(--section);
+}
+
+.install-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(18px, 2.4vw, 30px);
+}
+
+.install-steps {
+  align-self: end;
+  border-bottom: 1px solid var(--hair);
+}
+
+.install-steps li {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr;
+  align-items: baseline;
+  padding: 20px 0;
+  border-top: 1px solid var(--hair);
+}
+
+.install-steps span {
+  font: 700 1.9rem/1 var(--display);
+  letter-spacing: -0.04em;
+  color: var(--moss);
+}
+
+code {
+  padding: 0.15em 0.45em;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  font: 0.86em var(--mono);
+}
+
+.fine {
+  grid-column: 1 / -1;
+  max-width: 46em;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--ink) 64%, transparent);
+}
+
+/* Footer */
+
+.foot {
+  padding: 0 var(--gutter) 26px;
+  border-top: 1px solid var(--hair);
+  overflow: hidden;
+}
+
+.foot-word {
+  margin: 0 -0.05em;
+  font: 800 clamp(4rem, 17vw, 19rem)/0.9 var(--display);
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.065em;
+  color: var(--moss);
+  white-space: nowrap;
+}
+
+.foot-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 30px;
+  padding-top: 22px;
+  font-size: 0.9375rem;
+}
+
+.foot-row nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+}
+
+/* Smaller screens: one column, no pinning. */
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hero,
+  .how-pin,
+  .install,
+  .never-foot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero {
+    row-gap: 54px;
+    padding-top: 104px;
+  }
+
+  .facts {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 8px;
+  }
+
+  .how-pin {
+    row-gap: 56px;
+    padding: var(--section) var(--gutter);
+  }
+
+  .rail {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .browser {
+    display: none;
+  }
+
+  .stage .slot {
+    place-items: center;
+    padding: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .slot {
+    height: 540px;
+  }
+
+  .device {
+    scale: 0.88;
+  }
+}
+
+/* The character waits just off the left edge until scrolling begins. */
+.motion .buddy {
+  translate: -90px 0;
+}
+
+/* With JavaScript running, things that animate in start hidden. Without it,
+   or with reduced motion, everything is simply there. */
+.motion [data-load],
+.motion [data-reveal],
+.motion .install-steps li {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* The fixed nav switches to light text while it sits over a dark section. */
+.nav-light .nav,
+.nav-over-dark .nav {
+  --nav-bg: var(--ink);
+  --fg: var(--paper);
+  --hair: color-mix(in srgb, var(--paper) 22%, transparent);
+}
+
+.nav-light .pill-quiet:hover,
+.nav-over-dark .pill-quiet:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* The character: a small timer that walks along the bottom of the window as
+   the page scrolls. Its outer ring is how far down the page you are. */
+
+.buddy {
+  position: fixed;
+  z-index: 40;
+  bottom: 8px;
+  left: 14px;
+  width: 62px;
+  color: var(--ink);
+  pointer-events: none;
+  transition: color 0.5s var(--ease);
+}
+
+.buddy.on-dark {
+  color: var(--paper);
+}
+
+.buddy svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.buddy-leg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.buddy-leg {
+  transform-box: view-box;
+}
+
+#legA {
+  transform-origin: 29px 58px;
+}
+
+#legB {
+  transform-origin: 43px 58px;
+}
+
+.buddy-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 0 100;
+}
+
+.buddy-disc {
+  fill: var(--moss);
+  stroke: var(--paper);
+  stroke-width: 2.5;
+}
+
+.buddy-eye {
+  fill: #fff;
+}
+
+#pupils circle {
+  fill: var(--ink);
+}
+
+.buddy-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 5.5s infinite;
+}
+
+@keyframes blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.08);
+  }
+}
+
+.buddy-smile {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.buddy-say {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  padding: 7px 12px;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 500 0.75rem/1.3 var(--text);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), background-color 0.5s var(--ease), color 0.5s var(--ease);
+}
+
+.buddy-say.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.buddy.flip .buddy-say {
+  right: 0;
+  left: auto;
+  border-radius: 14px 14px 4px 14px;
+}
+
+.buddy.on-dark .buddy-say {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .buddy {
+    width: 48px;
+  }
+}

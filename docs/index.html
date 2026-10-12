@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dammer — refreshes your tab, nothing else</title>
+  <meta name="description" content="Dammer is a free, open-source Chrome extension that reloads any tab on a timer you set. It makes no network requests and cannot read your pages.">
+  <meta property="og:title" content="Dammer — refreshes your tab, nothing else">
+  <meta property="og:description" content="A private auto-refresher for any tab. Free and open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aleenatahir1.github.io/dammer/">
+  <meta property="og:image" content="https://aleenatahir1.github.io/dammer/screenshots/digital-light-running.png">
+  <meta name="theme-color" content="#f4f3ee">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav" data-load>
+    <a class="brand" href="#top" aria-label="Dammer, back to top">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle class="mark-disc" cx="16" cy="16" r="16"/>
+        <circle class="mark-ring" cx="16" cy="16" r="10.24"/>
+        <path class="mark-wedge" d="M16 16V9.6A6.4 6.4 0 0 1 21.54 19.2z"/>
+      </svg>
+      <span>Dammer</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a class="wipe" href="#how">How it works</a>
+      <a class="wipe" href="#privacy">Privacy</a>
+      <a class="wipe" href="#install">Install</a>
+    </nav>
+    <a class="pill pill-quiet" href="https://github.com/AleenaTahir1/dammer">GitHub</a>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow" data-load>Chrome extension · free · open source</p>
+        <h1 id="headline">Refreshes<br>your tab.<br><span class="soft">Nothing else.</span></h1>
+        <p class="lede" data-load>Dammer reloads any tab on a timer you set. It makes no network requests and cannot read a single page.</p>
+        <div class="hero-actions" data-load>
+          <a class="pill pill-solid" href="https://github.com/AleenaTahir1/dammer/releases/latest">
+            <span>Download for Chrome</span>
+            <small>free, no account</small>
+          </a>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer">Read the code</a>
+        </div>
+      </div>
+
+      <div class="hero-demo" data-load>
+        <div class="stage">
+          <div class="browser" aria-hidden="true">
+            <div class="browser-bar">
+              <span class="dots"><i></i><i></i><i></i></span>
+              <span class="tab"><i class="tab-spin" id="tabSpin"></i>Inbox · Example Mail</span>
+              <span class="ext">
+                <svg viewBox="0 0 32 32"><circle class="mark-disc" cx="16" cy="16" r="16"/><circle class="mark-ring" cx="16" cy="16" r="10.24"/><path class="mark-wedge" d="M16 16V9.6A6.4 6.4 0 0 1 21.54 19.2z"/></svg>
+                <b>ON</b>
+              </span>
+            </div>
+            <div class="browser-url">mail.example.com/inbox</div>
+            <div class="browser-load"><i id="loadBar"></i></div>
+            <div class="page">
+              <p class="page-h">Inbox <span id="pageNote">up to date</span></p>
+              <ul class="rows" id="rows">
+                <li><i></i><span></span><span></span></li>
+                <li><i></i><span></span><span></span></li>
+                <li><i></i><span></span><span></span></li>
+                <li><i></i><span></span><span></span></li>
+                <li><i></i><span></span><span></span></li>
+                <li><i></i><span></span><span></span></li>
+                <li><i></i><span></span><span></span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="slot">
+            <div class="device" id="heroDevice">
+              <iframe class="demo" title="Dammer running live" src="demo/popup/popup.html" width="360" height="526" loading="eager"></iframe>
+            </div>
+          </div>
+        </div>
+        <p class="caption"><i class="live-dot" aria-hidden="true"></i><span id="heroCaption">The real extension, running live. Click around.</span></p>
+      </div>
+
+      <dl class="facts" data-load>
+        <div><dt>0</dt><dd>network requests</dd></div>
+        <div><dt>4</dt><dd>permissions</dd></div>
+        <div><dt>53</dt><dd>checks in real Chrome</dd></div>
+        <div><dt>29<small>KB</small></dt><dd>download</dd></div>
+      </dl>
+    </section>
+
+    <section class="how" id="how">
+      <div class="how-pin">
+        <div class="how-copy">
+          <p class="eyebrow">How it works</p>
+          <h2 data-lines>One popup.<br>Four decisions.</h2>
+          <ol class="steps" id="steps">
+            <li>
+              <button class="step" type="button" aria-current="true">
+                <span class="step-n">01</span>
+                <span class="step-t">Pick the tab</span>
+                <span class="step-d"><span>Choose any open page once. Dammer remembers it and finds it again after a restart.</span></span>
+              </button>
+            </li>
+            <li>
+              <button class="step" type="button">
+                <span class="step-n">02</span>
+                <span class="step-t">Pick the clock</span>
+                <span class="step-d"><span>Digital numbers, or an analog hand that sweeps once per cycle.</span></span>
+              </button>
+            </li>
+            <li>
+              <button class="step" type="button">
+                <span class="step-n">03</span>
+                <span class="step-t">Pick the mood</span>
+                <span class="step-d"><span>Light, dark or frosted glass. It follows your system until you choose.</span></span>
+              </button>
+            </li>
+            <li>
+              <button class="step" type="button">
+                <span class="step-n">04</span>
+                <span class="step-t">Pick the colour</span>
+                <span class="step-d"><span>Five earth tones. The toolbar icon stays green so you always know it is running.</span></span>
+              </button>
+            </li>
+          </ol>
+        </div>
+        <div class="how-demo">
+          <div class="rail" aria-hidden="true"><i id="rail"></i></div>
+          <div class="slot">
+            <div class="device" id="howDevice">
+              <iframe class="demo" title="Dammer live demo, changing as you scroll" src="demo/popup/popup.html" width="360" height="526"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="never" id="privacy">
+      <p class="eyebrow" data-reveal>Privacy</p>
+      <h2 data-lines>What it can’t do.</h2>
+      <ul class="never-list">
+        <li>Read what is on a page</li>
+        <li>See passwords, cookies or forms</li>
+        <li>Send anything, anywhere</li>
+        <li>Load new code after install</li>
+      </ul>
+      <div class="never-foot" data-reveal>
+        <p>These are not promises. The browser enforces them: Dammer’s security policy blocks every outgoing connection, and it asks for no access to the content of any site.</p>
+        <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/PRIVACY.md">Read the privacy policy</a>
+      </div>
+    </section>
+
+    <section class="screens" aria-label="Screenshots">
+      <div class="screens-head">
+        <p class="eyebrow" data-reveal>Every screen</p>
+        <h2 data-lines>Small enough<br>to see it all.</h2>
+      </div>
+      <div class="screens-track" id="track">
+        <img src="screenshots/digital-light-running.png" width="360" height="481" alt="Digital timer counting down, light theme" loading="lazy">
+        <img src="screenshots/analog-dark-running.png" width="360" height="481" alt="Analog clock timer, dark theme" loading="lazy">
+        <img src="screenshots/tab-picker-light.png" width="360" height="546" alt="Tab picker listing open pages" loading="lazy">
+        <img src="screenshots/glass-digital-running.png" width="360" height="483" alt="Digital timer, glass theme" loading="lazy">
+        <img src="screenshots/settings-light.png" width="360" height="570" alt="Settings, light theme" loading="lazy">
+        <img src="screenshots/glass-analog-running.png" width="360" height="483" alt="Analog clock timer, glass theme" loading="lazy">
+        <img src="screenshots/settings-dark.png" width="360" height="570" alt="Settings, dark theme" loading="lazy">
+        <img src="screenshots/about-light.png" width="360" height="570" alt="About page with version and developer links" loading="lazy">
+      </div>
+    </section>
+
+    <section class="install" id="install">
+      <div class="install-head">
+        <p class="eyebrow" data-reveal>Install</p>
+        <h2 data-lines>Three steps.<br>One minute.</h2>
+        <a class="pill pill-solid" data-reveal href="https://github.com/AleenaTahir1/dammer/releases/latest">
+          <span>Download for Chrome</span>
+          <small>free, no account</small>
+        </a>
+      </div>
+      <ol class="install-steps">
+        <li><span>1</span><p>Download the zip from the latest release and unzip it.</p></li>
+        <li><span>2</span><p>Open <code>chrome://extensions</code> and turn on Developer mode.</p></li>
+        <li><span>3</span><p>Click Load unpacked and choose the unzipped folder.</p></li>
+      </ol>
+      <p class="fine" data-reveal>Works in Chrome 120 or newer, and in Edge, Brave, Arc and Opera. Some websites do not allow automatic refreshing; check a site’s terms before using Dammer on it.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="foot-word" aria-hidden="true">Dammer</p>
+    <div class="foot-row">
+      <p>Made by Aleena Tahir, with help from <a class="wipe" href="https://github.com/Razee4315">Saqlain Abbas</a></p>
+      <nav aria-label="Links">
+        <a class="wipe" href="https://github.com/AleenaTahir1">GitHub</a>
+        <a class="wipe" href="https://www.linkedin.com/in/aleenatahir">LinkedIn</a>
+        <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/PRIVACY.md">Privacy</a>
+        <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/CHANGELOG.md">Changelog</a>
+        <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/LICENSE">MIT License</a>
+      </nav>
+    </div>
+  </footer>
+
+  <div class="buddy" id="buddy" aria-hidden="true">
+    <p class="buddy-say" id="buddySay"></p>
+    <svg viewBox="0 0 72 84">
+      <g class="buddy-leg" id="legA"><path d="M29 58v15h6"/></g>
+      <g class="buddy-leg" id="legB"><path d="M43 58v15h6"/></g>
+      <g id="buddyBody">
+        <circle class="buddy-ring" id="buddyRing" cx="36" cy="33" r="31" pathLength="100" transform="rotate(-90 36 33)"/>
+        <circle class="buddy-disc" cx="36" cy="33" r="25"/>
+        <g class="buddy-eyes">
+          <circle class="buddy-eye" cx="27" cy="29" r="6.6"/>
+          <circle class="buddy-eye" cx="45" cy="29" r="6.6"/>
+          <g id="pupils"><circle cx="27" cy="29" r="3"/><circle cx="45" cy="29" r="3"/></g>
+        </g>
+        <path class="buddy-smile" d="M29.5 42q6.5 5.5 13 0"/>
+      </g>
+    </svg>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>

@@ -33,7 +33,7 @@ Nothing. The extension's content security policy sets `connect-src 'none'`, whic
 
 Reloading a tab does cause *your browser* to request that page from its website again, exactly as pressing the reload button would. That request goes from your browser to the site, not through Dammer.
 
-The About page contains links to the developer's GitHub and LinkedIn profiles. They open in a new tab only if you click them.
+The About page contains links to the developers' GitHub and LinkedIn profiles. They open in a new tab only if you click them.
 
 ## Other permissions
 

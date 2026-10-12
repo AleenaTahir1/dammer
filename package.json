@@ -1,6 +1,6 @@
 {
   "name": "dammer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Dammer — a private, lightweight auto-refresher for any browser tab (Chrome extension, Manifest V3).",
   "type": "module",
@@ -12,7 +12,8 @@
     "check": "node tools/check.mjs",
     "test": "node tests/e2e/run.mjs",
     "build": "node tools/build.mjs",
-    "icons": "python3 tools/make_icons.py"
+    "icons": "python3 tools/make_icons.py",
+    "site": "node tools/site.mjs"
   },
   "engines": {
     "node": ">=22"
