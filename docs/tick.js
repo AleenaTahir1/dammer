@@ -369,7 +369,7 @@
     if ((zoneIn -= dt) < 0) {
       zoneIn = 0.25;
       const under = document.elementsFromPoint(clamp(pos.x + origin.x, 1, innerWidth - 1), clamp(pos.y + origin.y - size * 0.4, 1, innerHeight - 1));
-      const dark = under.some((el) => el.matches?.('.never, .never *, .how.is-dark, .how.is-dark *'));
+      const dark = under.some((el) => el.matches?.('.never, .never *, .how.is-dark, .how.is-dark *, .foot-panel, .foot-panel *'));
       tick.dataset.zone = dark ? 'dark' : '';
     }
 
@@ -398,6 +398,7 @@
   });
 
   new ResizeObserver(fitLayer).observe(document.body);
+  addEventListener('load', fitLayer);
   fitLayer();
 
   // Tick drops in from above once the page has settled.

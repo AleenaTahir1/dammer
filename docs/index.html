@@ -40,29 +40,6 @@
   <main id="main">
     <section class="hero" id="top">
       <div class="hero-sky">
-        <div class="tabcards" id="tabcards" role="group" aria-label="Example tabs. Choose one and the live demo below refreshes it. Drag them around if you like.">
-          <button class="tabcard tabcard-0" type="button" data-tab="11" data-site="mail.example.com/inbox" data-title="Inbox" data-perch aria-pressed="true" aria-label="Refresh the Inbox tab">
-            <span class="tabcard-bar"><i></i><i></i><i></i><b>Inbox</b></span>
-            <span class="tabcard-lines"><i></i><i></i><i></i></span>
-            <span class="tabcard-foot"><span class="tabcard-meter"><i></i></span><span class="tabcard-time">idle</span></span>
-          </button>
-          <button class="tabcard tabcard-1" type="button" data-tab="12" data-site="shop.example.org/orders" data-title="Orders" data-perch aria-pressed="false" aria-label="Refresh the Orders tab">
-            <span class="tabcard-bar"><i></i><i></i><i></i><b>Orders</b></span>
-            <span class="tabcard-lines"><i></i><i></i><i></i></span>
-            <span class="tabcard-foot"><span class="tabcard-meter"><i></i></span><span class="tabcard-time">idle</span></span>
-          </button>
-          <button class="tabcard tabcard-2" type="button" data-tab="13" data-site="scores.example.net/live" data-title="Live scores" data-perch aria-pressed="false" aria-label="Refresh the Live scores tab">
-            <span class="tabcard-bar"><i></i><i></i><i></i><b>Live scores</b></span>
-            <span class="tabcard-lines"><i></i><i></i><i></i></span>
-            <span class="tabcard-foot"><span class="tabcard-meter"><i></i></span><span class="tabcard-time">idle</span></span>
-          </button>
-          <button class="tabcard tabcard-3" type="button" data-tab="14" data-site="stats.example.io/dashboard" data-title="Dashboard" data-perch aria-pressed="false" aria-label="Refresh the Dashboard tab">
-            <span class="tabcard-bar"><i></i><i></i><i></i><b>Dashboard</b></span>
-            <span class="tabcard-lines"><i></i><i></i><i></i></span>
-            <span class="tabcard-foot"><span class="tabcard-meter"><i></i></span><span class="tabcard-time">idle</span></span>
-          </button>
-        </div>
-
         <div class="hero-copy">
           <p class="eyebrow" data-load>Free · open source · for Chrome</p>
           <h1 id="headline" data-perch="text">Any tab, refreshed.<br><em>Nothing else.</em></h1>
@@ -74,35 +51,52 @@
             </a>
             <a class="wipe" href="https://github.com/AleenaTahir1/dammer">Read the code</a>
           </div>
-          <p class="hint" data-load>Pick a tab card. The demo below refreshes it for real.</p>
         </div>
       </div>
 
       <div class="hero-demo" data-load>
         <div class="stage">
           <div class="browser" aria-hidden="true" data-perch>
-            <div class="browser-bar">
-              <span class="dots"><i></i><i></i><i></i></span>
-              <span class="tab"><i class="tab-spin" id="tabSpin"></i><span id="tabTitle">Inbox · Example Mail</span></span>
+            <div class="b-tabs">
+              <span class="lights"><i></i><i></i><i></i></span>
+              <span class="b-tab is-active">
+                <i class="fav" id="tabFav">M</i>
+                <span id="tabTitle">Inbox · Example Mail</span>
+                <svg class="b-x" viewBox="0 0 16 16"><path d="M4.5 4.5l7 7m0-7l-7 7"/></svg>
+              </span>
+              <span class="b-tab">
+                <i class="fav fav-plain"></i>
+                <span>New Tab</span>
+                <svg class="b-x" viewBox="0 0 16 16"><path d="M4.5 4.5l7 7m0-7l-7 7"/></svg>
+              </span>
+              <svg class="b-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>
+            </div>
+            <div class="b-bar">
+              <svg class="b-ico" viewBox="0 0 20 20"><path d="M12.5 4.5L7 10l5.5 5.5"/></svg>
+              <svg class="b-ico is-off" viewBox="0 0 20 20"><path d="M7.5 4.5L13 10l-5.5 5.5"/></svg>
+              <svg class="b-ico" id="reloadIcon" viewBox="0 0 20 20"><path d="M15.6 8A6 6 0 1 0 16 11"/><path d="M16 4v4h-4"/></svg>
+              <span class="omnibox">
+                <svg viewBox="0 0 20 20"><path d="M4 7h7m3 0h2M4 13h2m3 0h7"/><circle cx="12.5" cy="7" r="1.6"/><circle cx="7.5" cy="13" r="1.6"/></svg>
+                <span id="tabUrl">mail.example.com/inbox</span>
+                <svg class="star" viewBox="0 0 20 20"><path d="M10 3.2l2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7-3.4-3.3 4.7-.7z"/></svg>
+              </span>
+              <svg class="b-ico" viewBox="0 0 20 20"><path d="M8 4.5h1.2a1.6 1.6 0 1 1 3 0H14a1 1 0 0 1 1 1v2.3a1.6 1.6 0 1 0 0 3V14a1 1 0 0 1-1 1h-2.3a1.6 1.6 0 1 0-3 0H7a1 1 0 0 1-1-1v-2.3a1.6 1.6 0 1 1 0-3V5.5a1 1 0 0 1 1-1z"/></svg>
               <span class="ext">
                 <svg viewBox="0 0 32 32"><circle class="mark-disc" cx="16" cy="16" r="16"/><circle class="mark-ring" cx="16" cy="16" r="10.24"/><path class="mark-wedge" d="M16 16V9.6A6.4 6.4 0 0 1 21.54 19.2z"/></svg>
                 <b>ON</b>
               </span>
+              <i class="avatar">A</i>
+              <svg class="b-ico b-dots" viewBox="0 0 20 20"><circle cx="10" cy="4.5" r="1.3"/><circle cx="10" cy="10" r="1.3"/><circle cx="10" cy="15.5" r="1.3"/></svg>
             </div>
-            <div class="browser-url" id="tabUrl">mail.example.com/inbox</div>
             <div class="browser-load"><i id="loadBar"></i></div>
             <div class="page">
-              <div class="page-side"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="page-side">
+                <p class="app-name"><i class="fav" id="appFav">M</i><span id="appName">Example Mail</span></p>
+                <ul id="pageNav"></ul>
+              </div>
               <div class="page-main">
                 <p class="page-h"><span id="pageTitle">Inbox</span> <span id="pageNote">up to date</span></p>
-                <ul class="rows" id="rows">
-                  <li><i></i><span></span><span></span></li>
-                  <li><i></i><span></span><span></span></li>
-                  <li><i></i><span></span><span></span></li>
-                  <li><i></i><span></span><span></span></li>
-                  <li><i></i><span></span><span></span></li>
-                  <li><i></i><span></span><span></span></li>
-                </ul>
+                <ul class="rows" id="rows"></ul>
               </div>
             </div>
           </div>
@@ -221,16 +215,62 @@
   </main>
 
   <footer class="foot">
-    <p class="foot-word" aria-hidden="true" data-perch="text">Dammer</p>
-    <div class="foot-row">
-      <p>Made by Aleena Tahir</p>
-      <nav aria-label="Links">
-        <a class="wipe" href="https://github.com/AleenaTahir1">GitHub</a>
-        <a class="wipe" href="https://www.linkedin.com/in/aleenatahir">LinkedIn</a>
-        <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/PRIVACY.md">Privacy</a>
-        <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/CHANGELOG.md">Changelog</a>
-        <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/LICENSE">MIT License</a>
-      </nav>
+    <div class="foot-panel">
+      <div class="foot-top">
+        <div class="foot-cta">
+          <h2 data-lines data-perch="text">Set it once.<br><em>Let it tick.</em></h2>
+          <a class="pill pill-light" data-reveal data-perch href="https://github.com/AleenaTahir1/dammer/releases/latest">
+            <span>Download for Chrome</span>
+            <small>free</small>
+          </a>
+        </div>
+
+        <div class="foot-clock" data-reveal data-perch>
+          <p class="eyebrow">You have been here for</p>
+          <p class="foot-time" id="stay">0:00</p>
+          <div class="foot-meter"><i id="stayBar"></i></div>
+          <p class="foot-note" id="stayNote">This page has not reloaded once. Some tabs need a nudge; that is what Dammer is for.</p>
+        </div>
+      </div>
+
+      <div class="foot-links">
+        <div class="foot-brand">
+          <a class="brand" href="#top" aria-label="Dammer, back to top">
+            <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+              <circle class="mark-disc" cx="16" cy="16" r="16"/>
+              <circle class="mark-ring" cx="16" cy="16" r="10.24"/>
+              <path class="mark-wedge" d="M16 16V9.6A6.4 6.4 0 0 1 21.54 19.2z"/>
+            </svg>
+            <span>Dammer</span>
+          </a>
+          <p>A private auto-refresher for any tab. Free and open source.</p>
+        </div>
+        <nav aria-label="Product">
+          <p class="eyebrow">Product</p>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer/releases/latest">Download</a>
+          <a class="wipe" href="#how">How it works</a>
+          <a class="wipe" href="#install">Install</a>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/CHANGELOG.md">Changelog</a>
+        </nav>
+        <nav aria-label="Project">
+          <p class="eyebrow">Project</p>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer">Source code</a>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/PRIVACY.md">Privacy</a>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/SECURITY.md">Security</a>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <nav aria-label="Author">
+          <p class="eyebrow">Made by</p>
+          <span>Aleena Tahir</span>
+          <a class="wipe" href="https://github.com/AleenaTahir1">GitHub</a>
+          <a class="wipe" href="https://www.linkedin.com/in/aleenatahir">LinkedIn</a>
+        </nav>
+      </div>
+
+      <div class="foot-base">
+        <p>© 2026 Aleena Tahir</p>
+        <a class="foot-up" href="#top">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
     </div>
   </footer>
 

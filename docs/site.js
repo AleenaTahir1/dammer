@@ -24,27 +24,113 @@
     }
   });
 
-  /* The browser window in the hero: each real refresh from the popup reloads
-     its page, and a new message arrives at the top. */
+  /* The browser window in the hero. Each example tab has its own made-up page;
+     every real refresh from the popup reloads it and something new arrives
+     at the top, which is the whole reason anyone refreshes a tab. */
 
-  const rows = $$('#rows li');
-  function refreshPage() {
-    rows.forEach((row, i) => {
-      row.classList.toggle('is-new', i === 0);
-      row.lastElementChild.style.setProperty('--w', `${42 + Math.random() * 50}%`);
-    });
-    $('#pageNote').textContent = refreshes === 1 ? '1 new message' : `${refreshes} new messages`;
-    dispatchEvent(new CustomEvent('dammer:refresh'));
-    if (!motionOK) return;
-    // The chosen card turns over, like a page being reloaded.
-    chosen.animate([{ rotate: 'x 0deg' }, { rotate: 'x 360deg' }], { duration: 800, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-    gsap
-      .timeline()
-      .fromTo('#loadBar', { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.7, ease: 'power2.inOut' })
-      .to('#loadBar', { opacity: 0, duration: 0.3 })
-      .fromTo('#tabSpin', { rotate: 0 }, { rotate: 720, duration: 1, ease: 'power1.inOut' }, 0)
-      .fromTo(rows, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.05, duration: 0.6 }, 0.35);
+  const PAGES = {
+    11: {
+      url: 'mail.example.com/inbox', app: 'Example Mail', letter: 'M', colour: '#c2573a', title: 'Inbox', tab: 'Inbox · Example Mail', noun: 'message',
+      nav: [['Inbox', '3'], ['Starred'], ['Sent'], ['Drafts', '1'], ['Archive']],
+      rows: [['Priya Nair', 'Invoice for October — totals attached', '09:41'], ['Tom Becker', 'Re: Logo revisions, round two', '09:12'], ['Studio Lumen', 'Your order has shipped', 'Yesterday'], ['Hana Sato', 'Can we move the call to Friday?', 'Yesterday'], ['Billing', 'Receipt for your subscription', 'Mon'], ['Omar Haddad', 'Thanks for the quick turnaround', 'Mon']],
+      incoming: [['Daniel Okafor', 'New brief: landing page for a bakery'], ['Lea Martin', 'Quick question about delivery time'], ['Noor Aziz', 'Approved — please send the final files'], ['Sam Rivera', 'Are you free for a small job today?']],
+    },
+    12: {
+      url: 'shop.example.org/orders', app: 'Corner Shop', letter: 'C', colour: '#2f7d6b', title: 'Orders', tab: 'Orders · Corner Shop', noun: 'order',
+      nav: [['Orders', '12'], ['Products'], ['Customers'], ['Payouts'], ['Settings']],
+      rows: [['Order #4821', 'Maya Chen · 2 items · Paid', '$84.00'], ['Order #4820', 'Jonas Weber · 1 item · Paid', '$29.00'], ['Order #4819', 'Aisha Khan · 4 items · Packed', '$152.50'], ['Order #4818', 'Luca Rossi · 1 item · Shipped', '$18.00'], ['Order #4817', 'Emma Clarke · 3 items · Shipped', '$67.20'], ['Order #4816', 'Kenji Mori · 2 items · Delivered', '$41.00']],
+      incoming: [['Order #4822', 'Sofia Alvarez · 1 item · Paid'], ['Order #4823', 'Ben Carter · 3 items · Paid'], ['Order #4824', 'Ines Dubois · 2 items · Paid'], ['Order #4825', 'Ravi Patel · 5 items · Paid']],
+    },
+    13: {
+      url: 'scores.example.net/live', app: 'Matchday', letter: 'S', colour: '#2d5fb8', title: 'Live scores', tab: 'Live scores · Matchday', noun: 'update',
+      nav: [['Live', '4'], ['Fixtures'], ['Results'], ['Tables'], ['Following']],
+      rows: [['Harbour City 2 – 1 Northfield', 'Second half · 64′', 'Live'], ['Eastbrook 0 – 0 Lakeside', 'First half · 31′', 'Live'], ['Riverton 3 – 2 Ashdown', 'Second half · 88′', 'Live'], ['Westmoor 1 – 1 Kingsbridge', 'Half time', 'HT'], ['Oldport 2 – 0 Fenwick', 'Full time', 'FT'], ['Marlow 1 – 3 Stonehill', 'Full time', 'FT']],
+      incoming: [['Goal! Harbour City 3 – 1 Northfield', 'Second half · 67′'], ['Goal! Eastbrook 1 – 0 Lakeside', 'First half · 38′'], ['Red card · Riverton v Ashdown', 'Second half · 90′'], ['Goal! Westmoor 2 – 1 Kingsbridge', 'Second half · 52′']],
+    },
+    14: {
+      url: 'stats.example.io/dashboard', app: 'Analytics', letter: 'A', colour: '#6a4fb3', title: 'Dashboard', tab: 'Dashboard · Analytics', noun: 'event',
+      nav: [['Dashboard'], ['Visitors'], ['Sales'], ['Reports'], ['Alerts', '2']],
+      rows: [['Visitors right now', '128 people on the site', 'Live'], ['New signup', 'ana@example.com · Free plan', '2 min'], ['Sale completed', 'Pro plan · yearly', '6 min'], ['New signup', 'kofi@example.com · Free plan', '9 min'], ['Traffic spike', 'Search · up 18% in the last hour', '14 min'], ['Sale completed', 'Starter plan · monthly', '21 min']],
+      incoming: [['Sale completed', 'Pro plan · monthly'], ['New signup', 'mei@example.com · Pro trial'], ['Visitors right now', '141 people on the site'], ['New signup', 'liam@example.com · Free plan']],
+    },
+  };
+  const TONES = ['#8a9aa8', '#b08968', '#7fa37a', '#a87fa3', '#7f8fc0', '#c08a7f'];
+  const rowList = $('#rows');
+  let page = PAGES[11];
+  let arrivals = 0;
+
+  function rowFor([who, text, meta], index, fresh) {
+    const li = document.createElement('li');
+    li.className = fresh ? 'is-new' : '';
+    li.innerHTML = '<i></i><b></b><time></time><span></span>';
+    li.children[0].textContent = who.replace(/^(Order #|Goal! )/, '')[0];
+    li.children[0].style.setProperty('--tone', fresh ? page.colour : TONES[index % TONES.length]);
+    li.children[1].textContent = who;
+    li.children[2].textContent = meta;
+    li.children[3].textContent = text;
+    return li;
   }
+
+  function showPage(tabId) {
+    page = PAGES[tabId];
+    arrivals = 0;
+    const browser = $('.browser');
+    browser.style.setProperty('--fav', page.colour);
+    for (const id of ['tabFav', 'appFav']) $(`#${id}`).textContent = page.letter;
+    $('#tabTitle').textContent = page.tab;
+    $('#tabUrl').textContent = page.url;
+    $('#appName').textContent = page.app;
+    $('#pageTitle').textContent = page.title;
+    $('#pageNote').textContent = 'Up to date';
+    $('#pageNav').replaceChildren(
+      ...page.nav.map(([name, count], i) => {
+        const li = document.createElement('li');
+        li.className = i === 0 ? 'is-here' : '';
+        li.textContent = name;
+        if (count) li.append(Object.assign(document.createElement('span'), { textContent: count }));
+        return li;
+      }),
+    );
+    page.shown = page.rows.map((row) => [...row]);
+    rowList.replaceChildren(...page.shown.map((row, i) => rowFor(row, i, false)));
+  }
+
+  function refreshPage() {
+    // Something new arrives at the top and the oldest row drops off.
+    const [who, text] = page.incoming[arrivals % page.incoming.length];
+    arrivals += 1;
+    page.shown = [[who, text, 'now'], ...page.shown.slice(0, 5)];
+    const draw = () => {
+      rowList.replaceChildren(...page.shown.map((row, i) => rowFor(row, i, i === 0)));
+      $('#pageNote').textContent = `${arrivals} new ${page.noun}${arrivals === 1 ? '' : 's'} since you started`;
+    };
+    dispatchEvent(new CustomEvent('dammer:refresh'));
+    if (!motionOK) return draw();
+    // As in Chrome: the tab icon becomes a spinner, the reload arrow turns, a
+    // bar runs across, the page blanks for a moment and comes back.
+    const icon = $('#tabFav');
+    icon.classList.add('is-loading');
+    gsap
+      .timeline({ onComplete: () => icon.classList.remove('is-loading') })
+      .fromTo('#reloadIcon', { rotate: 0 }, { rotate: 360, duration: 0.8, ease: 'power2.inOut', transformOrigin: '50% 50%' }, 0)
+      .fromTo('#loadBar', { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.75, ease: 'power2.inOut' }, 0)
+      .to('.page-main', { opacity: 0, duration: 0.18 }, 0.05)
+      .add(() => {
+        draw();
+        gsap.fromTo('#rows li', { opacity: 0, y: 8 }, { opacity: 1, y: 0, stagger: 0.04, duration: 0.45 });
+      }, 0.45)
+      .to('.page-main', { opacity: 1, duration: 0.3 }, 0.5)
+      .to('#loadBar', { opacity: 0, duration: 0.25 }, 0.8);
+  }
+
+  /* Footer: how long the visitor has stayed. The bar fills once a minute. */
+
+  const arrived = Date.now();
+  setInterval(() => {
+    const seconds = Math.floor((Date.now() - arrived) / 1000);
+    $('#stay').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+    $('#stayBar').style.setProperty('--p', String((seconds % 60) / 59));
+  }, 1000);
 
   // Runs something inside a demo once its popup script is ready.
   function withDemo(frame, action) {
@@ -57,101 +143,18 @@
     attempt();
   }
 
-  /* Tab cards: four example tabs floating beside the headline. Choosing one
-     points the live demo at it; they can also be dragged and spring back. */
-
-  const cards = $$('.tabcard');
-  const titles = { 11: 'Inbox · Example Mail', 12: 'Orders · Corner Shop', 13: 'Live scores · Matchday', 14: 'Dashboard · Analytics' };
-  let chosen = cards[0];
-  let run = null;
-
-  function showChosen(card) {
-    chosen = card;
-    cards.forEach((c) => c.setAttribute('aria-pressed', String(c === card)));
-    $('#tabTitle').textContent = titles[card.dataset.tab];
-    $('#tabUrl').textContent = card.dataset.site;
-    $('#pageTitle').textContent = card.dataset.title;
-    $('#pageNote').textContent = 'up to date';
-    rows.forEach((row) => row.classList.remove('is-new'));
-  }
-
-  function chooseCard(card) {
-    if (card === chosen) return;
-    showChosen(card);
-    withDemo(frames[0], (win) => win.demo.pick(Number(card.dataset.tab)));
-  }
-
-  // The chosen card mirrors the demo's real timer. If the tab is changed
-  // inside the popup instead, the cards follow.
+  // The browser window shows whichever tab the popup is refreshing, so
+  // changing the tab inside the popup changes the page behind it.
+  let shownTab = 11;
+  showPage(shownTab);
   withDemo(frames[0], (win) => {
     setInterval(async () => {
-      run = await win.demo.run();
-      const card = cards.find((c) => Number(c.dataset.tab) === run?.tabId);
-      if (card && card !== chosen) showChosen(card);
+      const run = await win.demo.run();
+      if (!run || run.tabId === shownTab || !PAGES[run.tabId]) return;
+      shownTab = run.tabId;
+      showPage(shownTab);
     }, 400);
   });
-
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const bodies = cards.map((card, i) => ({ card, x: 0, y: 0, vx: 0, vy: 0, grab: null, moved: 0, phase: i * 1.7, lean: [-3, 2.5, 3, -2][i] }));
-
-  for (const body of bodies) {
-    const { card } = body;
-    card.addEventListener('pointerdown', (event) => {
-      if (still) return;
-      card.setPointerCapture(event.pointerId);
-      body.grab = { px: event.clientX, py: event.clientY, x: body.x, y: body.y };
-      body.moved = 0;
-    });
-    card.addEventListener('pointermove', (event) => {
-      if (!body.grab) return;
-      const dx = event.clientX - body.grab.px;
-      const dy = event.clientY - body.grab.py;
-      body.moved = Math.max(body.moved, Math.hypot(dx, dy));
-      body.vx = (body.grab.x + dx - body.x) * 12;
-      body.vy = (body.grab.y + dy - body.y) * 12;
-      body.x = body.grab.x + dx;
-      body.y = body.grab.y + dy;
-    });
-    const release = () => (body.grab = null);
-    card.addEventListener('pointerup', release);
-    card.addEventListener('pointercancel', release);
-    // A drag is not a choice.
-    card.addEventListener('click', () => {
-      if (body.moved < 6) chooseCard(card);
-      body.moved = 0;
-    });
-  }
-
-  let cardClock = 0;
-  let lastCardFrame = 0;
-  function cardFrame(now) {
-    const dt = lastCardFrame ? Math.min((now - lastCardFrame) / 1000, 1 / 20) : 1 / 60;
-    lastCardFrame = now;
-    cardClock += dt;
-    for (const body of bodies) {
-      if (!body.grab) {
-        // A spring pulls each card home; released mid-throw, it overshoots and settles.
-        body.vx += (-90 * body.x - 9 * body.vx) * dt;
-        body.vy += (-90 * body.y - 9 * body.vy) * dt;
-        body.x += body.vx * dt;
-        body.y += body.vy * dt;
-      }
-      const bob = still ? 0 : Math.sin(cardClock * 0.9 + body.phase) * 6;
-      body.card.style.translate = `${body.x.toFixed(1)}px ${(body.y + bob).toFixed(1)}px`;
-      body.card.style.rotate = `${(body.lean + clampNumber(body.vx * 0.012, -9, 9)).toFixed(2)}deg`;
-
-      const live = body.card === chosen && run;
-      const total = live ? Math.max(1, run.nextAt - run.cycleStart) : 1;
-      const left = live ? Math.max(0, run.nextAt - Date.now()) : 0;
-      body.card.style.setProperty('--p', live ? String(Math.min(1, 1 - left / total)) : '0');
-      const text = live ? `0:${String(Math.ceil(left / 1000)).padStart(2, '0')}` : 'idle';
-      const label = body.card.querySelector('.tabcard-time');
-      if (label.textContent !== text) label.textContent = text;
-    }
-    requestAnimationFrame(cardFrame);
-  }
-  const clampNumber = (value, lo, hi) => Math.max(lo, Math.min(hi, value));
-  requestAnimationFrame(cardFrame);
 
   /* How it works: each step re-configures the second demo. */
 
@@ -216,7 +219,6 @@
       .from(headline.lines, { yPercent: 110, duration: 1.3, stagger: 0.11 })
       .to('.nav[data-load]', { opacity: 1, duration: 0.8 }, 0.1)
       .fromTo('.hero-copy [data-load]', { opacity: 0, y: 26 }, { opacity: 1, y: 0, stagger: 0.09 }, 0.45)
-      .fromTo('.tabcard', { opacity: 0, y: -70, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.3, stagger: 0.12 }, 0.5)
       .fromTo('.hero-demo', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.4 }, 0.6)
       .fromTo('#heroDevice', { y: -40, scale: 0.94, opacity: 0, transformOrigin: '86% 0%' }, { y: 0, scale: 1, opacity: 1, duration: 1.1 }, 1.1)
       .fromTo('.facts', { opacity: 0 }, { opacity: 1 }, 0.9)
@@ -296,12 +298,14 @@
   }
 
   /* The nav turns light while it is over the dark privacy section. */
-  ScrollTrigger.create({
-    trigger: '.never',
-    start: 'top 40px',
-    end: 'bottom 40px',
-    onToggle: (self) => document.body.classList.toggle('nav-over-dark', self.isActive),
-  });
+  for (const dark of ['.never', '.foot-panel']) {
+    ScrollTrigger.create({
+      trigger: dark,
+      start: 'top 40px',
+      end: 'bottom 40px',
+      onToggle: (self) => document.body.classList.toggle('nav-over-dark', self.isActive),
+    });
+  }
 
   /* Screens drift sideways as the section passes. */
   const track = $('#track');
@@ -313,5 +317,6 @@
 
   /* Install steps and the footer wordmark. */
   gsap.fromTo('.install-steps li', { opacity: 0, x: 40 }, { opacity: 1, x: 0, stagger: 0.12, scrollTrigger: { trigger: '.install-steps', start: 'top 82%' } });
-  gsap.from('.foot-word', { yPercent: 38, ease: 'none', scrollTrigger: { trigger: '.foot', start: 'top bottom', end: 'bottom bottom', scrub: 0.6 } });
+  /* The footer panel rises into place as the page ends. */
+  gsap.from('.foot-panel', { yPercent: 14, scale: 0.965, transformOrigin: '50% 100%', ease: 'none', scrollTrigger: { trigger: '.foot', start: 'top bottom', end: 'top 35%', scrub: 0.6 } });
 })();
