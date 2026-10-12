@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — Dammer Auto Refresh Extension</title>
+  <meta name="description" content="Dammer collects nothing and sends nothing. See exactly what the auto-refresh extension can see, what it stores on your computer, and how to remove it.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Aleena Tahir">
+  <link rel="canonical" href="https://aleenatahir1.github.io/dammer/privacy/">
+  <meta property="og:site_name" content="Dammer">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Privacy Policy — Dammer Auto Refresh Extension">
+  <meta property="og:description" content="Dammer collects nothing and sends nothing. See exactly what the auto-refresh extension can see, what it stores on your computer, and how to remove it.">
+  <meta property="og:url" content="https://aleenatahir1.github.io/dammer/privacy/">
+  <meta property="og:image" content="https://aleenatahir1.github.io/dammer/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dammer, a private auto-refresh extension for Chrome">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Privacy Policy — Dammer Auto Refresh Extension">
+  <meta name="twitter:description" content="Dammer collects nothing and sends nothing. See exactly what the auto-refresh extension can see, what it stores on your computer, and how to remove it.">
+  <meta name="twitter:image" content="https://aleenatahir1.github.io/dammer/og.png">
+  <meta name="theme-color" content="#e6e7dc">
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="apple-touch-icon" href="../favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://aleenatahir1.github.io/dammer/privacy/","url":"https://aleenatahir1.github.io/dammer/privacy/","name":"Privacy Policy — Dammer Auto Refresh Extension","description":"Dammer collects nothing and sends nothing. See exactly what the auto-refresh extension can see, what it stores on your computer, and how to remove it.","dateModified":"2026-10-12","inLanguage":"en","isPartOf":{"@id":"https://aleenatahir1.github.io/dammer/#website"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Dammer","item":"https://aleenatahir1.github.io/dammer/"},{"@type":"ListItem","position":2,"name":"Privacy","item":"https://aleenatahir1.github.io/dammer/privacy/"}]}]}</script>
+</head>
+<body class="doc-page" id="top">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <a class="brand" href="../" aria-label="Dammer home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle class="mark-disc" cx="16" cy="16" r="16"/><circle class="mark-ring" cx="16" cy="16" r="10.24"/><path class="mark-wedge" d="M16 16V9.6A6.4 6.4 0 0 1 21.54 19.2z"/></svg><span>Dammer</span></a>
+    <nav class="nav-links" aria-label="Site">
+      <a class="wipe" href="../#how">How it works</a>
+      <a class="wipe" href="../install/">Install</a>
+      <a class="wipe" href="../faq/">FAQ</a>
+      <a class="wipe" href="../privacy/" aria-current="page">Privacy</a>
+    </nav>
+    <a class="pill pill-quiet" href="https://github.com/AleenaTahir1/dammer">GitHub</a>
+  </header>
+
+  <main id="main" class="doc">
+    <header class="doc-head">
+      <nav class="crumbs" aria-label="Breadcrumb"><a class="wipe" href="../">Dammer</a><span aria-hidden="true">/</span><span aria-current="page">Privacy</span></nav>
+      <p class="eyebrow">Privacy policy</p>
+      <h1>Dammer collects nothing.</h1>
+      <p class="doc-lede">No accounts, no analytics, no advertising and no servers. Everything the extension does happens inside your browser, on your computer.</p>
+    </header>
+
+    <article class="prose" data-perch>
+<p class="doc-date">Effective 12 October 2026. Applies to Dammer 1.0.0 and later.</p>
+
+<h2 id="see">What Dammer can see</h2>
+<p>Dammer has the <code>tabs</code> permission. This lets it read the <strong>title and address of your open tabs</strong>, which it uses for two things:</p>
+<ul>
+  <li>to show your tabs in the tab picker so you can choose one;</li>
+  <li>to check, each time a refresh is due, that the chosen tab is still on the same site and has not been sent to a login page.</li>
+</ul>
+<p>Dammer has no content scripts and no host permissions. It <strong>cannot read or change what is on any page</strong>: not text, not forms, not passwords, not cookies.</p>
+
+<h2 id="store">What Dammer stores</h2>
+<p>All of it stays in your browser profile on your computer.</p>
+<div class="table"><table>
+  <thead><tr><th>Where</th><th>What</th><th>Kept until</th></tr></thead>
+  <tbody>
+    <tr><td>Local extension storage</td><td>Your settings: interval, theme, timer style and so on.</td><td>You reset or remove the extension.</td></tr>
+    <tr><td>Local extension storage</td><td>The tab you chose: its tab number and its address <strong>without</strong> the query string or fragment (for example <code>https://example.com/inbox</code>, never <code>?token=…</code>).</td><td>You choose another tab or remove the extension.</td></tr>
+    <tr><td>Local extension storage</td><td>The number of the tab currently protected from Memory Saver, so the protection can be undone after an update.</td><td>The timer stops.</td></tr>
+    <tr><td>Session storage (memory only)</td><td>The running timer: tab number, address as above, start time, next refresh time and refresh count.</td><td>The timer stops or the browser closes.</td></tr>
+    <tr><td>Popup local storage</td><td>A copy of your theme and colour, so the popup opens without a flash.</td><td>You remove the extension.</td></tr>
+  </tbody>
+</table></div>
+<p>Dammer does not use Chrome's synced storage, so nothing is copied to your Google account.</p>
+
+<h2 id="send">What Dammer sends</h2>
+<p>Nothing. The extension's content security policy sets <code>connect-src 'none'</code>, which makes the browser block every network request from the extension's own pages. The project's automated check also fails if networking code is ever added.</p>
+<p>Reloading a tab does cause <em>your browser</em> to request that page from its website again, exactly as pressing the reload button would. That request goes from your browser to the site, not through Dammer.</p>
+<p>The About page inside the extension links to the developer's GitHub and LinkedIn profiles. They open in a new tab only if you click them.</p>
+
+<h2 id="other">Other permissions</h2>
+<ul>
+  <li><code>alarms</code>: to wake the extension when a refresh is due.</li>
+  <li><code>storage</code>: for the items in the table above.</li>
+  <li><code>idle</code>: to learn whether the computer has been used in the last minute, for the "Pause while I'm on the tab" setting. Dammer receives only "active", "idle" or "locked".</li>
+</ul>
+<p>Each one is explained on the <a href="../security/#permissions">security and permissions page</a>.</p>
+
+<h2 id="website">This website</h2>
+<p>This website has no analytics, cookies or tracking of its own. It is hosted on GitHub Pages and loads its fonts from Google Fonts and its animation libraries from the jsDelivr CDN, so those services receive the ordinary request data any web server does, such as your IP address. The live demo on the home page runs entirely in your browser.</p>
+
+<h2 id="remove">Removing your data</h2>
+<p>Removing the extension from <code>chrome://extensions</code> deletes everything it stored. The <strong>Reset</strong> button in settings restores the defaults without removing the extension.</p>
+
+<h2 id="changes">Changes to this policy</h2>
+<p>Any change is recorded in the <a href="../changelog/">changelog</a>. A release that changed what Dammer can see or store would say so in its notes.</p>
+
+<h2 id="contact">Contact</h2>
+<p>Questions: <a href="https://github.com/AleenaTahir1/dammer/issues">open an issue on GitHub</a>. To report a security problem privately, see the <a href="../security/#report">security page</a>.</p>
+    </article>
+
+    <nav class="doc-more" aria-label="More pages">
+      <a href="../security/" data-perch><span class="eyebrow">Security and permissions</span><strong>Security</strong><span aria-hidden="true">→</span></a>
+      <a href="../install/" data-perch><span class="eyebrow">Install guide</span><strong>Install</strong><span aria-hidden="true">→</span></a>
+      <a href="../faq/" data-perch><span class="eyebrow">Frequently asked questions</span><strong>FAQ</strong><span aria-hidden="true">→</span></a>
+      <a href="../changelog/" data-perch><span class="eyebrow">Changelog</span><strong>Changelog</strong><span aria-hidden="true">→</span></a>
+    </nav>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-panel">
+      <div class="foot-top">
+        <div class="foot-cta">
+          <h2 data-perch="text">Set it once.<br><em>Let it tick.</em></h2>
+          <a class="pill pill-light" data-perch href="https://github.com/AleenaTahir1/dammer/releases/latest"><span>Download for Chrome</span><small>free</small></a>
+        </div>
+        <div class="foot-clock" data-perch>
+          <p class="eyebrow">You have been here for</p>
+          <p class="foot-time" id="stay">0:00</p>
+          <div class="foot-meter"><i id="stayBar"></i></div>
+          <p class="foot-note">This page has not reloaded once. Some tabs need a nudge; that is what Dammer is for.</p>
+        </div>
+      </div>
+      <div class="foot-links">
+        <div class="foot-brand">
+          <a class="brand" href="../" aria-label="Dammer home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle class="mark-disc" cx="16" cy="16" r="16"/><circle class="mark-ring" cx="16" cy="16" r="10.24"/><path class="mark-wedge" d="M16 16V9.6A6.4 6.4 0 0 1 21.54 19.2z"/></svg><span>Dammer</span></a>
+          <p>A private auto-refresh extension for any tab. Free and open source.</p>
+        </div>
+        <nav aria-label="Product">
+          <p class="eyebrow">Product</p>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer/releases/latest">Download</a>
+          <a class="wipe" href="../#how">How it works</a>
+          <a class="wipe" href="../install/">Install guide</a>
+          <a class="wipe" href="../faq/">FAQ</a>
+          <a class="wipe" href="../changelog/">Changelog</a>
+        </nav>
+        <nav aria-label="Project">
+          <p class="eyebrow">Project</p>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer">Source code</a>
+          <a class="wipe" href="../privacy/">Privacy policy</a>
+          <a class="wipe" href="../security/">Security</a>
+          <a class="wipe" href="https://github.com/AleenaTahir1/dammer/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <nav aria-label="Author">
+          <p class="eyebrow">Made by</p>
+          <span>Aleena Tahir</span>
+          <a class="wipe" href="https://github.com/AleenaTahir1">GitHub</a>
+          <a class="wipe" href="https://www.linkedin.com/in/aleenatahir">LinkedIn</a>
+        </nav>
+      </div>
+      <div class="foot-base">
+        <p>© 2026 Aleena Tahir</p>
+        <a class="foot-up" href="#top">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="tick-sky" data-tick-sky aria-hidden="true"><div class="tick" data-tick hidden><svg viewBox="0 0 64 64" overflow="visible"><g data-part="feet"><ellipse class="t-foot" cx="23" cy="59" rx="6.2" ry="3.6"/><ellipse class="t-foot" cx="41" cy="59" rx="6.2" ry="3.6"/></g><g data-part="bell-l"><path class="t-bell" d="M9.4 19.6a9.6 9.6 0 0 1 16.6-9.6z"/><circle class="t-bell" cx="14.6" cy="9.4" r="2.5"/></g><g data-part="bell-r"><path class="t-bell" d="M54.6 19.6a9.6 9.6 0 0 0-16.6-9.6z"/><circle class="t-bell" cx="49.4" cy="9.4" r="2.5"/></g><path class="t-arm" d="M27 12.5q5-4.4 10 0"/><circle class="t-body" cx="32" cy="37" r="21"/><circle class="t-face" cx="32" cy="37" r="16"/><path class="t-marks" d="M32 23v2.4M32 48.6V51M18 37h2.4M43.6 37H46"/><g data-part="eyes"><g data-part="lids"><ellipse class="t-eye" cx="26" cy="36" rx="2.9" ry="3.9"/><ellipse class="t-eye" cx="38" cy="36" rx="2.9" ry="3.9"/><circle class="t-glint" cx="27" cy="34.4" r="1.1"/><circle class="t-glint" cx="39" cy="34.4" r="1.1"/></g><path class="t-smile" d="M29.4 42.2q2.6 2.4 5.2 0"/></g><ellipse class="t-blush" cx="21.6" cy="41.4" rx="2.8" ry="1.8"/><ellipse class="t-blush" cx="42.4" cy="41.4" rx="2.8" ry="1.8"/><g class="t-ring" data-part="ring"><path d="M3.5 8.5q-3 6-.6 12M60.5 8.5q3 6 .6 12M-2 5.5q-4.2 9-.8 18M66 5.5q4.2 9 .8 18"/></g></svg></div></div>
+  <script src="../pages.js"></script>
+  <script src="../tick.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
   "name": "dammer",
   "version": "1.0.2",
   "private": true,
-  "description": "Dammer — a private, lightweight auto-refresher for any browser tab (Chrome extension, Manifest V3).",
+  "description": "Dammer \u2014 a private, lightweight auto-refresher for any browser tab (Chrome extension, Manifest V3).",
   "type": "module",
   "license": "MIT",
   "author": "Aleena Tahir (https://github.com/AleenaTahir1)",
@@ -13,7 +13,7 @@
     "test": "node tests/e2e/run.mjs",
     "build": "node tools/build.mjs",
     "icons": "python3 tools/make_icons.py",
-    "site": "node tools/site.mjs"
+    "site": "node tools/site.mjs && node tools/pages.mjs"
   },
   "engines": {
     "node": ">=22"

@@ -12,8 +12,9 @@
 <p align="center">
   <a href="https://aleenatahir1.github.io/dammer/">Website</a> ·
   <a href="https://github.com/AleenaTahir1/dammer/releases/latest">Download</a> ·
-  <a href="PRIVACY.md">Privacy</a> ·
-  <a href="CHANGELOG.md">Changelog</a>
+  <a href="https://aleenatahir1.github.io/dammer/install/">Install guide</a> ·
+  <a href="https://aleenatahir1.github.io/dammer/faq/">FAQ</a> ·
+  <a href="https://aleenatahir1.github.io/dammer/privacy/">Privacy</a>
 </p>
 
 <p align="center">
@@ -110,7 +111,7 @@ docs/                the website (GitHub Pages), its live demo, screenshots and 
 | `npm run check` | Validates the manifest, parses every script and fails if networking code appears. No browser needed. |
 | `npm test` | Launches Chrome with a throwaway profile, loads the extension and runs 53 checks against local stand-in sites. Also retakes the screenshots. Needs Node 22+, Chrome and `openssl`. |
 | `npm run build` | Writes `dist/dammer-<version>.zip`. |
-| `npm run site` | Copies the popup into `docs/demo/` so the website's live demo matches the extension. |
+| `npm run site` | Copies the popup into `docs/demo/` so the website's live demo matches the extension, and rebuilds the site's inner pages and `sitemap.xml` from `tools/pages.mjs`. |
 
 How the pieces fit together is described in [docs/guide/ARCHITECTURE.md](docs/guide/ARCHITECTURE.md), and what the tests cover in [docs/guide/TESTING.md](docs/guide/TESTING.md). Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
 

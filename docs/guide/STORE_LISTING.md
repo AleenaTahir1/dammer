@@ -57,4 +57,4 @@ Certifications:
 - Does not use or transfer user data for purposes unrelated to the single purpose.
 - Does not use or transfer user data to determine creditworthiness or for lending.
 
-**Privacy policy URL:** https://github.com/AleenaTahir1/dammer/blob/main/PRIVACY.md
+**Privacy policy URL:** https://aleenatahir1.github.io/dammer/privacy/
